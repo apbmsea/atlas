@@ -1,0 +1,30 @@
+:root {
+	--font-family-base: 'Unbounded', 'sans-serif';
+	--transition-duration: 0.2s;
+
+	--background-globe: #0a0a0a;
+	--background-island: rgba(217, 217, 217, 0.05);
+	--background-island-inner: #c4e5ff;
+	--background-accent: #008cff;
+	--background-overlay: #3d3d3d;
+	--background-globe-inv: #ffffff;
+	--background-island-inv: rgba(255, 255, 255, 0.05);
+
+	--text-primary: #ffffff;
+	--text-secondary: rgba(255, 255, 255, 0.8);
+	--text-tertiary: rgba(255, 255, 255, 0.5);
+
+	--text-primary-inv: rgba(10, 10, 10, 0.9);
+	--text-secondary-inv: rgba(10, 10, 10, 0.7);
+	--text-tertiary-inv: rgba(10, 10, 10, 0.4);
+
+	--text-link: #008cff;
+	--text-link-visited: #c64bff;
+	--text-placeholder: #525252;
+
+	--stroke: #525252;
+	--stroke-inv: #a7a7a7;
+
+	--border-radius-block: 32px;
+	--border-radius: 56px;
+}

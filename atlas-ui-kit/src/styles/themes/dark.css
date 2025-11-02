@@ -1,0 +1,10 @@
+:root[data-theme='dark'] {
+	--background-globe: #0a0a0a;
+	--background-island: rgba(217, 217, 217, 0.05);
+
+	--text-primary: #ffffff;
+	--text-secondary: rgba(255, 255, 255, 0.8);
+	--text-tertiary: rgba(255, 255, 255, 0.5);
+
+	--stroke: #525252;
+}
