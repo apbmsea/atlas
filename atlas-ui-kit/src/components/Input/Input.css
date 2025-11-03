@@ -1,0 +1,90 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.input {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-duration);
+  border-radius: 4px;
+  background: transparent;
+  width: 1rem;
+  height: 1rem;
+  appearance: none;
+}
+
+.checkbox {
+  margin: 0;
+  margin-right: 10px;
+  border-color: var(--background-globe-inv)
+}
+
+
+.checkbox:not(:disabled) {
+  color: var(--text-primary);
+}
+
+
+/* доделать логику активации инпута */
+
+/* .checked {
+  background-color: transparent;
+  border-color: var(--background-accent);
+} */
+
+.checkbox:hover:not(:disabled) {
+  border-color: var(--background-accent);
+}
+
+.checkbox:disabled {
+  color: var(--text-tertiary);
+  border-color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.radio {
+  margin: 0;
+  margin-right: 10px;
+  border-radius: var(--border-radius);
+  border-color: var(--background-globe-inv)
+}
+
+.radio:default:not(:disabled) {
+  color: var(--background-globe-inv);
+}
+
+.radio:hover:not(:disabled) {
+  border-color: var(--text-link);
+}
+
+.radio:disabled {
+  color: var(--text-tertiary);
+  border-color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+
+.label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.label:disabled {
+  cursor: not-allowed;
+  color: var(--text-tertiary);
+}
+
+.input:disabled+.label {
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
