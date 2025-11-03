@@ -9,3 +9,4 @@ export { default as ZoomIcon } from './ZoomIcon';
 export { default as ProfileIcon } from './ProfileIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as FullSizeIcon } from './FullSizeIcon';
+export { default as SearchIcon} from './SearchIcon'

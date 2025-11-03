@@ -1,0 +1,112 @@
+.textfield {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 10px;
+	position: relative;
+}
+
+.textfield__label {
+	font-size: 14px;
+	color: var(--text-secondary);
+}
+
+.textfield__wrapper {
+	position: relative;
+	display: flex;
+	align-items: stretch;
+	gap: 20px;
+	border: 1px solid var(--stroke-inv);
+	border-radius: var(--border-radius);
+	background-color: transparent;
+	transition: var(--transition-duration);
+}
+
+/* .textfield__wrapper:hover {
+    добавить как илья сделает состояние
+} */
+
+.textfield__wrapper:has(.textfield__input:disabled) {
+	border-color: var(--placeholder);
+	cursor: not-allowed;
+}
+
+.textfield__wrapper:focus-within {
+	border-color: var(--text-link);
+}
+
+.textfield__wrapper:focus-within .textfield__icon {
+	color: var(--stroke-inv);
+}
+
+.textfield__wrapper:has(.textfield__input:not(:placeholder-shown))
+	.textfield__icon {
+	color: var(--stroke-inv);
+}
+
+.textfield__wrapper:has(.textfield__input:disabled) .textfield__icon {
+	color: var(--placeholder);
+}
+
+.textfield__wrapper:has(.textfield__icon) .textfield__input {
+	padding-left: 0;
+}
+
+.textfield__error {
+	border-color: var(--error);
+}
+
+.textfield__success {
+	border-color: var(--success);
+}
+
+.textfield__input {
+	padding: 10px 20px 10px 20px;
+	flex: 1;
+	color: var(--stroke-inv);
+	font-weight: 300;
+	font-size: 1rem;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	min-width: 0;
+}
+
+.textfield__input:disabled {
+	color: var(--placeholder);
+	cursor: not-allowed;
+}
+
+.textfield__input::placeholder {
+	color: var(--placeholder);
+	font-weight: 300;
+	font-size: 1rem;
+}
+
+.textfield__icon {
+	padding-left: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	color: var(--placeholder);
+}
+
+.textfield__button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 1px;
+	padding: 3px 3px 3px 0;
+	box-sizing: border-box;
+}
+
+.textfield__button > .button {
+	height: 100%;
+}
+
+.textfield__error-message {
+	color: var(--error);
+	font-weight: 300;
+	font-size: 0.775rem;
+}
