@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { Button } from './components';
+import { Button, TextField } from './components';
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -11,7 +11,8 @@ import {
 	PlayIcon,
 	ProfileIcon,
 	QuestionIcon,
-	ZoomIcon
+	ZoomIcon,
+	SearchIcon
 } from './icons';
 import { ThemeProvider, useTheme } from './providers/ThemeProdiver';
 export {
@@ -26,7 +27,11 @@ export {
 	ProfileIcon,
 	QuestionIcon,
 	ZoomIcon,
+	SearchIcon,
+
 	Button,
+	TextField,
+
 	ThemeProvider,
 	useTheme
 };

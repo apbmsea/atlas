@@ -1,10 +1,16 @@
 :root[data-theme='light'] {
 	--background-globe: #ffffff;
 	--background-island: rgba(255, 255, 255, 0.05);
+	--background-globe-inv: #0a0a0a;
+	--background-island-inv: rgba(217, 217, 217, 0.05);
 
 	--text-primary: rgba(10, 10, 10, 0.9);
 	--text-secondary: rgba(10, 10, 10, 0.7);
 	--text-tertiary: rgba(10, 10, 10, 0.4);
+	--text-primary-inv: #ffffff;
+	--text-secondary-inv: rgba(255, 255, 255, 0.8);
+	--text-tertiary-inv: rgba(255, 255, 255, 0.5);
 
 	--stroke: #a7a7a7;
+	--stroke-inv: #525252;
 }
