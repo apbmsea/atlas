@@ -33,10 +33,9 @@
 
 /* доделать логику активации инпута */
 
-/* .checked {
-  background-color: transparent;
-  border-color: var(--background-accent);
-} */
+.input.checkbox:checked {
+  border: 1px solid var(--background-accent);
+}
 
 .checkbox:hover:not(:disabled) {
   border-color: var(--background-accent);
@@ -48,11 +47,19 @@
   cursor: not-allowed;
 }
 
+
+
 .radio {
   margin: 0;
   margin-right: 10px;
   border-radius: var(--border-radius);
-  border-color: var(--background-globe-inv)
+  border-color: var(--background-globe-inv);
+  background-color: transparent;
+
+}
+
+.input.radio:checked {
+  border-color: var(--background-accent)
 }
 
 .radio:default:not(:disabled) {

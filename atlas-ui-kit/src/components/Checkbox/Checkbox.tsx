@@ -1,13 +1,13 @@
 import React from 'react';
-import './Input.css';
+import './Checkbox.css';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Checkbox extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: 'checkbox' | 'radio';
   checked?: boolean
   disabled?: boolean
 }
 
-const InputCheckbox: React.FC<InputProps> = ({
+const Checkbox: React.FC<Checkbox> = ({
   variant = 'checkbox',
   disabled,
   checked,
@@ -18,7 +18,7 @@ const InputCheckbox: React.FC<InputProps> = ({
     <div className='container'>
       <input
         type={variant}
-        className={`input ${variant} ${checked} ? '' checked : ''`}
+        className={`input ${variant}`}
         disabled={disabled}
         {...restProps}
         id='input'
@@ -30,4 +30,4 @@ const InputCheckbox: React.FC<InputProps> = ({
   );
 };
 
-export default InputCheckbox;
+export default Checkbox;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import InputCheckbox from '../components/Input/Input';
+import InputCheckbox from '../components/Checkbox/Checkbox';
 
 const meta: Meta<typeof InputCheckbox> = {
   title: 'UI/InputCheckbox',
@@ -8,7 +8,7 @@ const meta: Meta<typeof InputCheckbox> = {
   argTypes: {
     variant: { control: 'select', options: ['checkbox', 'radio'] },
     children: { control: 'text' },
-    checked: { control: false }
+    checked: { control: 'boolean' }
   }
 };
 
@@ -35,7 +35,7 @@ export const DefaultRadio: Story = {
   args: {
     variant: 'radio',
     children: 'Череп',
-    checked: false
+    checked: false,
   }
 };
 
