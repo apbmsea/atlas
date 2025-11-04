@@ -1,4 +1,3 @@
-// src/components/Chip/Chip.tsx
 import React from 'react';
 import './Chip.css';
 import CloseIcon from '../../icons/CloseIcon';
