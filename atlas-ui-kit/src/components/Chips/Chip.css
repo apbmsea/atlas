@@ -1,0 +1,69 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius);
+  background-color: var(--text-placeholder);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+
+  &:hover:not(:disabled) {
+    opacity: 0.6;
+  }
+
+  &.chip__disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.chip__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.chip__small {
+  padding: 4px 10px;
+}
+
+.chip__medium {
+  padding: 6px 10px;
+}
+
+.chip__large {
+  padding: 10px;
+}
+
+.chip__text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: var(--text-placeholder);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
