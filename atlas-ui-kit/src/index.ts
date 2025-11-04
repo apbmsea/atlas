@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { Button, TextField } from './components';
+import { Button, TextField, Select } from './components';
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -31,6 +31,7 @@ export {
 
 	Button,
 	TextField,
+	Select,
 
 	ThemeProvider,
 	useTheme
