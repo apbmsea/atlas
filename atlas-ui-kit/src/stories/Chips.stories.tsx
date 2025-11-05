@@ -19,7 +19,6 @@ export const DefaultSmall: Story = {
   args: {
     children: 'Голова',
     size: 'small',
-    onRemove: () => alert('Удалено'),
   },
 };
 
@@ -27,7 +26,6 @@ export const HoverSmall: Story = {
   args: {
     children: 'Голова',
     size: 'small',
-    onRemove: () => alert('Удалено'),
   },
   parameters: {
     pseudo: { hover: true },
@@ -46,7 +44,6 @@ export const DefaultMedium: Story = {
   args: {
     children: 'Голова',
     size: 'medium',
-    onRemove: () => alert('Удалено'),
   },
 };
 
@@ -54,7 +51,6 @@ export const HoverMedium: Story = {
   args: {
     children: 'Голова',
     size: 'medium',
-    onRemove: () => alert('Удалено'),
   },
   parameters: {
     pseudo: { hover: true },
@@ -73,7 +69,6 @@ export const DefaultLarge: Story = {
   args: {
     children: 'Голова',
     size: 'large',
-    onRemove: () => alert('Удалено'),
   },
 };
 
@@ -81,7 +76,6 @@ export const HoverLarge: Story = {
   args: {
     children: 'Голова',
     size: 'large',
-    onRemove: () => alert('Удалено'),
   },
   parameters: {
     pseudo: { hover: true },

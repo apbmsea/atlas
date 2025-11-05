@@ -5,19 +5,23 @@
   padding: 4px 12px;
   border-radius: var(--border-radius);
   background-color: var(--text-placeholder);
-  color: var(--text-primary);
   cursor: pointer;
+  transition: var(--transition-duration);
   transition: all 0.2s ease;
   border: 1px solid transparent;
 
   &:hover:not(:disabled) {
-    opacity: 0.6;
+    background-color: var(--background-overlay);
   }
 
   &.chip__disabled {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 }
 
@@ -53,14 +57,14 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  color: var(--text-primary);
   background-color: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 
   &:hover:not(:disabled) {
-    background-color: var(--text-placeholder);
+    color: var(--text-primary);
   }
 
   &:disabled {
