@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from '../types/IconProps';
 
-const CircleIcon: React.FC<IconProps> = ({ size = 20, color = 'currentColor', ...props }) => {
+const MinusIcon: React.FC<IconProps> = ({ size = 20, color = 'currentColor', ...props }) => {
   return (
     <svg
       width={size}
@@ -11,16 +11,15 @@ const CircleIcon: React.FC<IconProps> = ({ size = 20, color = 'currentColor', ..
       xmlns="http://www.w3.org/2000/svg"
       style={{ pointerEvents: 'none' }}
     >
-
-      <circle
-        cx="10"
-        cy="10"
-        r="8"
-        fill={color}
+      <path
+        d="M5 10h10"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-
     </svg>
   );
 };
 
-export default CircleIcon;
+export default MinusIcon;

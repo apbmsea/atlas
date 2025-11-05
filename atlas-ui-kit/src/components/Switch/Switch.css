@@ -20,8 +20,8 @@
   width: 40px;
   height: 20px;
   border-radius: var(--border-radius);
-  background-color: transparent;
-  border: 2px solid var(--text-tertiary);
+  /* background-color: transparent; */
+  border: 2px solid var(--text-placeholder);
   transition: border-color 0.2s ease;
   position: relative;
   cursor: pointer;
@@ -32,10 +32,10 @@
   top: 50%;
   left: 3px;
   transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  background-color: var(--background-globe-inv);
+  background-color: var(--text-primary);
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   z-index: 1;
@@ -47,6 +47,8 @@
 
 .switch-input:checked+.switch-label .switch-track {
   border-color: var(--background-accent);
+  background-color: var(--background-accent);
+  background-color: var(--background-accent)
 }
 
 .switch-input:checked+.switch-label .switch-thumb {
@@ -60,10 +62,25 @@
 
 .switch-input:disabled+.switch-label .switch-track {
   border-color: var(--text-tertiary);
+  background-color: var(--text-tertiary);
   cursor: not-allowed;
 }
 
 .switch-input:disabled+.switch-label .switch-thumb {
-  background-color: var(--text-tertiary);
+  background-color: var(--text-primary);
   cursor: not-allowed;
+}
+
+.switch-input:disabled:not(:checked)+.switch-label .switch-track {
+  background-color: transparent;
+  color: var(--text-tertiary);
+  border-color: var(--text-tertiary);
+}
+
+.switch-input:disabled:not(:checked)+.switch-label .switch-thumb {
+  background-color: var(--text-tertiary);
+}
+
+.switch-input:checked:not(:disabled)+.switch-label {
+  color: var(--text-link)
 }

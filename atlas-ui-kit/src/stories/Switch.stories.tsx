@@ -31,5 +31,6 @@ export const Disabled: Story = {
   args: {
     children: 'Переключатель',
     disabled: true,
+    checked: false,
   },
 };

@@ -9,7 +9,7 @@ const Switch: React.FC<SwitchProps> = ({
   disabled,
   children,
   id,
-  ...restProps
+  ...props
 }) => {
   const autoId = React.useId();
   const inputId = id || autoId;
@@ -17,11 +17,11 @@ const Switch: React.FC<SwitchProps> = ({
   return (
     <>
       <input
+        {...props}
         id={inputId}
         type="checkbox"
         className="switch-input"
         disabled={disabled}
-        {...restProps}
       />
       <label htmlFor={inputId} className="switch-label">
         <span className="switch-track"></span>

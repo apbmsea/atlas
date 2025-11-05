@@ -6,7 +6,7 @@ const meta: Meta<typeof InputCheckbox> = {
   component: InputCheckbox,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'select', options: ['checkbox', 'radio'] },
+    type: { control: 'select', options: ['checkbox', 'radio'] },
     children: { control: 'text' },
     checked: { control: 'boolean' }
   }
@@ -17,7 +17,7 @@ type Story = StoryObj<typeof InputCheckbox>;
 
 export const Checkbox: Story = {
   args: {
-    variant: 'checkbox',
+    type: 'checkbox',
     children: 'Череп',
     checked: true
   }
@@ -25,7 +25,7 @@ export const Checkbox: Story = {
 
 export const DisabledCheckbox: Story = {
   args: {
-    variant: 'checkbox',
+    type: 'checkbox',
     children: 'Череп',
     disabled: true,
   }
@@ -33,7 +33,7 @@ export const DisabledCheckbox: Story = {
 
 export const DefaultRadio: Story = {
   args: {
-    variant: 'radio',
+    type: 'radio',
     children: 'Череп',
     checked: false,
   }
@@ -41,7 +41,7 @@ export const DefaultRadio: Story = {
 
 export const DisabledRadio: Story = {
   args: {
-    variant: 'radio',
+    type: 'radio',
     children: 'Череп',
     disabled: true,
   }
