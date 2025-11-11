@@ -1,0 +1,38 @@
+/* src/components/ThemeToggle/ThemeToggle.css */
+
+.theme_toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.button_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: var(--transition-duration);
+}
+
+.theme_toggle:hover:not(.theme-toggle--disabled) {
+  border-color: var(--background-accent);
+}
+
+.theme_toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* попробовать сделать что бы при наведении svg тоже менялся */
+
+.theme_toggle:hover:not(.theme-toggle--disabled) .button_icon {
+  color: var(--background-accent);
+}
