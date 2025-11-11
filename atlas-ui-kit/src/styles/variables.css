@@ -1,6 +1,7 @@
 :root {
 	--font-family-base: 'Unbounded', 'sans-serif';
 	--transition-duration: 0.2s;
+	--placeholder: #525252;
 
 	--background-globe: #0a0a0a;
 	--background-island: rgba(217, 217, 217, 0.05);
@@ -22,8 +23,13 @@
 	--text-link-visited: #c64bff;
 	--text-placeholder: #525252;
 
+	--error: #FF474A;
+	--success: #63FF6E;
+
 	--stroke: #525252;
 	--stroke-inv: #a7a7a7;
+
+	--disabled: #525252
 
 	--border-radius-block: 32px;
 	--border-radius: 56px;
