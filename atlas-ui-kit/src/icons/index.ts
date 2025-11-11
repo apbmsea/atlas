@@ -9,4 +9,9 @@ export { default as ZoomIcon } from './ZoomIcon';
 export { default as ProfileIcon } from './ProfileIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as FullSizeIcon } from './FullSizeIcon';
+export { default as CheckboxDefault } from './CheckboxDefault';
+export { default as CheckboxChecked } from './CheckboxChecked';
+export { default as CheckboxMinus } from './CheckboxMinus';
+export { default as RadioDefault } from './RadioDefault';
+export { default as RadioChecked } from './RadioChecked';
 export { default as SearchIcon} from './SearchIcon'

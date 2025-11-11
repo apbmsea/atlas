@@ -29,6 +29,8 @@
 	--stroke: #525252;
 	--stroke-inv: #a7a7a7;
 
+	--disabled: #525252
+
 	--border-radius-block: 32px;
 	--border-radius: 56px;
 }

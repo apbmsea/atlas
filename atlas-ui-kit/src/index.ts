@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { Button, TextField, Select } from './components';
+import { Button, TextField, Select, Checkbox, CheckboxGroup, Radio, RadioGroup, Switch } from './components';
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -12,6 +12,11 @@ import {
 	ProfileIcon,
 	QuestionIcon,
 	ZoomIcon,
+	CheckboxDefault,
+	CheckboxChecked,
+	CheckboxMinus,
+	RadioDefault,
+	RadioChecked
 	SearchIcon
 } from './icons';
 import { ThemeProvider, useTheme } from './providers/ThemeProdiver';
@@ -27,11 +32,21 @@ export {
 	ProfileIcon,
 	QuestionIcon,
 	ZoomIcon,
+	CheckboxDefault,
+	CheckboxChecked,
+	CheckboxMinus,
+	RadioDefault,
+	RadioChecked,
+	Checkbox,
+	CheckboxGroup,
+	Radio,
+	RadioGroup,
 	SearchIcon,
 
 	Button,
 	TextField,
 	Select,
+  Switch
 
 	ThemeProvider,
 	useTheme
