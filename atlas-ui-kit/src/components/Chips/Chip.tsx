@@ -12,12 +12,12 @@ const Chip: React.FC<ChipProps> = ({
   children,
   size = 'medium',
   disabled = false,
-  ...restProps
+  ...props
 }) => {
   return (
     <div
+      {...props}
       className={`chip chip__${size} ${disabled ? 'chip__disabled' : ''}`}
-      {...restProps}
     >
       <span className="chip__text">{children}</span>
       <button
