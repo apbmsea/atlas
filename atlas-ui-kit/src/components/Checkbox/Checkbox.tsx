@@ -1,39 +1,52 @@
-import React from 'react';
+import React, { useId } from 'react';
+import {
+  Checkbox as CheckboxUnchecked,
+  CheckboxChecked,
+  CheckboxMinus
+} from '../../icons';
 import './Checkbox.css';
 
-interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  type?: 'checkbox' | 'radio' | 'multi';
-  checked?: boolean;
+export interface CheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'checked'> {
+  checked: boolean;
   disabled?: boolean;
-  icon?: React.ReactNode;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  variant?: 'primary' | 'secondary';
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  children?: React.ReactNode;
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
-  type = 'checkbox',
-  checked = false,
+  checked,
   disabled = false,
-  icon,
-  children,
+  variant = 'primary',
   onChange,
+  children,
   ...props
 }) => {
+  const id = useId();
+
+  const icons = {
+    primary: { unchecked: <CheckboxUnchecked />, checked: <CheckboxChecked /> },
+    secondary: { unchecked: <CheckboxUnchecked />, checked: <CheckboxMinus /> }
+  };
+
+  const Icon = checked ? icons[variant].checked : icons[variant].unchecked;
+
   return (
-    <div className="container">
+    <label className={`checkbox ${disabled ? 'checkbox--disabled' : ''}`}>
       <input
         {...props}
-        type={type}
-        className={`input ${type}`}
+        id={id}
+        type="checkbox"
+        className="checkbox__input"
         disabled={disabled}
-        id="input"
         checked={checked}
         onChange={onChange}
       />
-      <label htmlFor="input" className="label">
-        {icon && <span className="icon">{icon}</span>}
-        {children}
-      </label>
-    </div>
+
+      <span className="checkbox__icon">{Icon}</span>
+      {children && <span className="checkbox__label">{children}</span>}
+    </label>
   );
 };
 

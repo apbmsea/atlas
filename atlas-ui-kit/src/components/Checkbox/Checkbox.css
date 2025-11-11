@@ -1,97 +1,52 @@
-.container {
-  display: inline-flex;
-  align-items: center;
-}
-
-.input {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: var(--transition-duration);
-  border-radius: 4px;
-  background: transparent;
-  width: 1rem;
-  height: 1rem;
-  appearance: none;
-}
-
 .checkbox {
-  margin: 0;
-  margin-right: 10px;
-  border-color: var(--background-globe-inv)
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	user-select: none;
+	font-weight: 300;
+	font-size: 1rem;
 }
 
-
-.checkbox:not(:disabled) {
-  color: var(--text-primary);
+.checkbox--disabled {
+	cursor: not-allowed;
 }
 
-
-/* доделать логику активации инпута */
-
-.input.checkbox:checked {
-  border: 1px solid var(--background-accent);
+.checkbox--disabled .checkbox__label,
+.checkbox--disabled .checkbox__icon {
+	color: var(--text-tertiary);
 }
 
-.checkbox:hover:not(:disabled) {
-  border-color: var(--background-accent);
+.checkbox__input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
 }
 
-.checkbox:disabled {
-  color: var(--text-tertiary);
-  border-color: var(--text-tertiary);
-  cursor: not-allowed;
+.checkbox__icon {
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: opacity var(--transition-duration);
 }
 
-
-
-.radio {
-  margin: 0;
-  margin-right: 10px;
-  border-radius: var(--border-radius);
-  border-color: var(--background-globe-inv);
-  background-color: transparent;
-
+.checkbox__label {
+	color: var(--text-primary);
 }
 
-.input.radio:checked {
-  border-color: var(--background-accent)
+.checkbox:hover:not(.checkbox--disabled) .checkbox__icon,
+.checkbox:hover:not(.checkbox--disabled) .checkbox__label {
+	color: var(--background-accent);
+	transition: var(--transition-duration);
 }
 
-.radio:default:not(:disabled) {
-  color: var(--background-globe-inv);
+.checkbox__input:focus-visible + .checkbox__icon {
+	color: var(--background-accent);
 }
 
-.radio:hover:not(:disabled) {
-  border-color: var(--text-link);
-}
-
-.radio:disabled {
-  color: var(--text-tertiary);
-  border-color: var(--text-tertiary);
-  cursor: not-allowed;
-}
-
-
-.label {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-}
-
-.label:disabled {
-  cursor: not-allowed;
-  color: var(--text-tertiary);
-}
-
-.input:disabled+.label {
-  color: var(--text-tertiary);
-  cursor: not-allowed;
+.checkbox__input:focus-visible ~ .checkbox__label {
+	color: var(--background-accent);
+	transition: var(--transition-duration);
 }
