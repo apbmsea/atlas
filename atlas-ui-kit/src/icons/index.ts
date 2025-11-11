@@ -14,3 +14,4 @@ export { default as CheckboxChecked } from './CheckboxChecked';
 export { default as CheckboxMinus } from './CheckboxMinus';
 export { default as RadioDefault } from './RadioDefault';
 export { default as RadioChecked } from './RadioChecked';
+export { default as SearchIcon} from './SearchIcon'

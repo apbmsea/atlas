@@ -1,11 +1,5 @@
 import './styles/global.css';
-import {
-	Button,
-	Checkbox,
-	CheckboxGroup,
-	Radio,
-	RadioGroup
-} from './components';
+import { Button, TextField, Select, Checkbox, CheckboxGroup, Radio, RadioGroup, Switch } from './components';
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -23,6 +17,7 @@ import {
 	CheckboxMinus,
 	RadioDefault,
 	RadioChecked
+	SearchIcon
 } from './icons';
 import { ThemeProvider, useTheme } from './providers/ThemeProdiver';
 export {
@@ -46,7 +41,13 @@ export {
 	CheckboxGroup,
 	Radio,
 	RadioGroup,
+	SearchIcon,
+
 	Button,
+	TextField,
+	Select,
+  Switch
+
 	ThemeProvider,
 	useTheme
 };
