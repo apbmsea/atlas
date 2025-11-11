@@ -1,5 +1,11 @@
 import './styles/global.css';
-import { Button } from './components';
+import {
+	Button,
+	Checkbox,
+	CheckboxGroup,
+	Radio,
+	RadioGroup
+} from './components';
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -11,7 +17,12 @@ import {
 	PlayIcon,
 	ProfileIcon,
 	QuestionIcon,
-	ZoomIcon
+	ZoomIcon,
+	CheckboxDefault,
+	CheckboxChecked,
+	CheckboxMinus,
+	RadioDefault,
+	RadioChecked
 } from './icons';
 import { ThemeProvider, useTheme } from './providers/ThemeProdiver';
 export {
@@ -26,6 +37,15 @@ export {
 	ProfileIcon,
 	QuestionIcon,
 	ZoomIcon,
+	CheckboxDefault,
+	CheckboxChecked,
+	CheckboxMinus,
+	RadioDefault,
+	RadioChecked,
+	Checkbox,
+	CheckboxGroup,
+	Radio,
+	RadioGroup,
 	Button,
 	ThemeProvider,
 	useTheme

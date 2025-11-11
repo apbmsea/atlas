@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import {
-  Checkbox as CheckboxUnchecked,
+  CheckboxDefault,
   CheckboxChecked,
   CheckboxMinus
 } from '../../icons';
@@ -26,8 +26,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
   const id = useId();
 
   const icons = {
-    primary: { unchecked: <CheckboxUnchecked />, checked: <CheckboxChecked /> },
-    secondary: { unchecked: <CheckboxUnchecked />, checked: <CheckboxMinus /> }
+    primary: { unchecked: <CheckboxDefault />, checked: <CheckboxChecked /> },
+    secondary: { unchecked: <CheckboxDefault />, checked: <CheckboxMinus /> }
   };
 
   const Icon = checked ? icons[variant].checked : icons[variant].unchecked;
