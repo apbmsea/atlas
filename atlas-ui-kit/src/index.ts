@@ -1,7 +1,8 @@
 import './styles/global.css';
-import { Button, Chip } from './components';
+
 import {
 	Button,
+	Chip,
 	TextField,
 	Select,
 	Checkbox,
@@ -10,8 +11,9 @@ import {
 	RadioGroup,
 	Switch,
 	Avatar,
-  ThemeToggle
+	ThemeToggle
 } from './components';
+
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -31,6 +33,7 @@ import {
 	RadioChecked,
 	SearchIcon
 } from './icons';
+
 import { ThemeProvider, useTheme } from './providers/ThemeProdiver';
 
 export {
@@ -50,6 +53,7 @@ export {
 	CheckboxMinus,
 	RadioDefault,
 	RadioChecked,
+
 	Checkbox,
 	CheckboxGroup,
 	Radio,
@@ -60,8 +64,9 @@ export {
 	TextField,
 	Select,
 	Switch,
+	ThemeToggle,
 	Avatar,
+
 	ThemeProvider,
 	useTheme,
-  ThemeToggle
 };
