@@ -1,5 +1,5 @@
 import './styles/global.css';
-import { Button } from './components';
+import { Button, Chip } from './components';
 import {
 	ArrowDownIcon,
 	ArrowLeftFullIcon,
@@ -27,6 +27,7 @@ export {
 	QuestionIcon,
 	ZoomIcon,
 	Button,
+	Chip,
 	ThemeProvider,
 	useTheme
 };
