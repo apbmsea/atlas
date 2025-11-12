@@ -1,4 +1,5 @@
 import './styles/global.css';
+import { Button, Chip } from './components';
 import {
 	Button,
 	TextField,
@@ -8,7 +9,8 @@ import {
 	Radio,
 	RadioGroup,
 	Switch,
-	Avatar
+	Avatar,
+  ThemeToggle
 } from './components';
 import {
 	ArrowDownIcon,
@@ -54,10 +56,12 @@ export {
 	RadioGroup,
 	SearchIcon,
 	Button,
+	Chip,
 	TextField,
 	Select,
 	Switch,
 	Avatar,
 	ThemeProvider,
-	useTheme
+	useTheme,
+  ThemeToggle
 };
