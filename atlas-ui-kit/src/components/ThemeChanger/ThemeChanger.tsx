@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ThemeChanger.css';
 import SunIcon from '../../icons/SunIcon';
 import MoonIcon from '../../icons/MoonIcon';
+import { useTheme } from '../../providers/ThemeProdiver';
 
 interface ThemeToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
@@ -12,10 +13,11 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
   onClick,
   ...props
 }) => {
-  const [isDark, setIsDark] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsDark(!isDark);
+    toggleTheme();
     onClick?.(e);
   };
 
