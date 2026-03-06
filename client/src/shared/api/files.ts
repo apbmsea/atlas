@@ -28,10 +28,12 @@ export const FilesAPI = {
     return r.data;
   },
 
-  async gltf(objectKey: string): Promise<ArrayBuffer> {
+  // glTF (JSON) с embedded base64. Увеличенный таймаут.
+  async gltf(objectKey: string): Promise<string> {
     const key = encodeURIComponent(objectKey);
-    const r = await $api.get<ArrayBuffer>(`/files/${key}/gltf`, {
-      responseType: 'arraybuffer',
+    const r = await $api.get<string>(`/files/${key}/gltf`, {
+      responseType: 'text',
+      timeout: 120_000,
     });
     return r.data;
   },

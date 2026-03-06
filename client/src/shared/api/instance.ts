@@ -1,10 +1,12 @@
 import type { HandledError } from '@shared/types/handledError.types';
 import axios from 'axios';
+import { API_BASE_URL } from '@shared/config/apiBase';
 
 export const $api = axios.create({
-	baseURL: import.meta.env.VITE_SERVER_URL,
+	baseURL: API_BASE_URL.replace(/\/+$/, ''),
+	// baseURL: import.meta.env.VITE_SERVER_URL,
 	// withCredentials: true,
-	timeout: 10000
+	timeout: 15000
 });
 
 $api.interceptors.request.use(config => {
@@ -44,7 +46,7 @@ $api.interceptors.response.use(
 		switch (handledError.status) {
 			case 400:
 				return Promise.reject(handledError);
-				
+
 			case 401:
 				if (!originalRequest._isRetry) {
 					originalRequest._isRetry = true;

@@ -1,0 +1,111 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { API_BASE_URL, WS_BASE_URL } from '@shared/config/apiBase';
+
+type Props = {
+  modelId: string;
+  wsUrl?: string;          // если нужен прямой URL; иначе строим из API_BASE_URL
+  height?: number;
+};
+
+export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
+  const [connected, setConnected] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [frameUrl, setFrameUrl] = useState<string | null>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  const lastUrlRef = useRef<string | null>(null);
+
+  const resolvedWsUrl = useMemo(() => {
+    if (wsUrl) return wsUrl;
+    const wsBase = WS_BASE_URL(API_BASE_URL) ?? (typeof window !== 'undefined' ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}` : 'ws://localhost:8010');
+    // По ТЗ порт 8010 и путь /ws/render/{modelId}. 
+    // return `${wsBase.replace(/\/\/[^/]+/, '//<host>:8010')}/ws/render/${modelId}`;
+    return `${wsBase.replace(/\/+$/, '')}/ws/render/${modelId}`;
+  }, [wsUrl, modelId]);
+
+  useEffect(() => {
+    setError(null);
+    const ws = new WebSocket(resolvedWsUrl);
+    ws.binaryType = 'arraybuffer';
+
+    ws.onopen = () => setConnected(true);
+    ws.onerror = () => setError('WebSocket error');
+    ws.onclose = () => setConnected(false);
+
+    ws.onmessage = (ev: MessageEvent) => {
+      // чистим предыдущий frame URL
+      if (lastUrlRef.current && lastUrlRef.current.startsWith('blob:')) {
+        URL.revokeObjectURL(lastUrlRef.current);
+        lastUrlRef.current = null;
+      }
+
+      let url: string | null = null;
+      const data = ev.data;
+
+      if (data instanceof ArrayBuffer) {
+        const blob = new Blob([data], { type: 'image/jpeg' });
+        url = URL.createObjectURL(blob);
+      } else if (data instanceof Blob) {
+        const type = (data as Blob).type || 'image/jpeg';
+        url = URL.createObjectURL(new Blob([data], { type }));
+      } else if (typeof data === 'string') {
+        // может приходить base64 или data URL
+        if (data.startsWith('data:image/')) {
+          url = data;
+        } else {
+          // пробуем как base64 jpeg
+          url = `data:image/jpeg;base64,${data}`;
+        }
+      }
+
+      if (url) {
+        setFrameUrl(url);
+        lastUrlRef.current = url;
+      }
+    };
+
+    wsRef.current = ws;
+    return () => {
+      ws.close();
+      if (lastUrlRef.current && lastUrlRef.current.startsWith('blob:')) {
+        URL.revokeObjectURL(lastUrlRef.current);
+        lastUrlRef.current = null;
+      }
+    };
+  }, [resolvedWsUrl]);
+
+  const sendRotate = () => {
+    const ws = wsRef.current;
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    // ТЗ: слать 'rotate'. На всякий случай поддержим и строку, и JSON.
+    try {
+      ws.send('rotate');
+    } catch {
+      try { ws.send(JSON.stringify({ action: 'rotate' })); } catch { /* empty */ }
+    }
+  };
+
+  return (
+    <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <button onClick={sendRotate} disabled={!connected}>Rotate</button>
+        <span style={{ fontSize: 12, color: connected ? '#4caf50' : '#999' }}>
+          {connected ? 'connected' : 'disconnected'}
+        </span>
+        {error && <span style={{ color: '#f44336', fontSize: 12 }}>{error}</span>}
+      </div>
+      <div style={{
+        width: '100%',
+        height,
+        background: '#111',
+        display: 'grid',
+        placeItems: 'center',
+        border: '1px solid #333',
+      }}>
+        {frameUrl
+          ? <img src={frameUrl} alt="render" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+          : <span style={{ color: '#777' }}>Waiting for frames…</span>
+        }
+      </div>
+    </div>
+  );
+}
