@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { model3dReducer } from '@features/model3d';
+import { Model3dFeature } from '@features/model3d';
 
-const rootReducer = combineReducers({
-  model3d: model3dReducer,
+export const rootReducer = combineReducers({
+  ...Model3dFeature.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'typed-redux-saga';
 import { FilesAPI, type FileInfo } from '@shared/api/files';
-import { model3dActions } from './slice';
+import { model3dActions } from './model/slice';
 
 // Простой in-memory кэш blob-URL по objectKey
 const modelCache = new Map<string, string>(); // key -> blob url
@@ -10,7 +10,7 @@ const toError = (e: unknown) =>
 
 function* fetchListWorker() {
   try {
-    const list: FileInfo[] = yield* call(FilesAPI.list);
+    const list = yield* call(FilesAPI.list);
     yield* put(model3dActions.fetchListSuccess(list));
   } catch (e) {
     yield* put(model3dActions.fetchListFailure(toError(e)));
@@ -79,8 +79,15 @@ function* deleteWorker(
 }
 
 export function* model3dSaga() {
-  yield* takeLatest(model3dActions.fetchListRequest.type, fetchListWorker);
-  yield* takeLatest(model3dActions.fetchModelRequest.type, fetchModelWorker);
-  yield* takeLatest(model3dActions.uploadRequest.type, uploadWorker);
-  yield* takeLatest(model3dActions.deleteRequest.type, deleteWorker);
+  // yield* takeLatest(model3dActions.fetchListRequest.type, fetchListWorker);
+  // yield* takeLatest(model3dActions.fetchModelRequest.type, fetchModelWorker);
+  // yield* takeLatest(model3dActions.uploadRequest.type, uploadWorker);
+  // yield* takeLatest(model3dActions.deleteRequest.type, deleteWorker);
+
+  yield* all([
+    takeLatest(model3dActions.fetchListRequest.type, fetchListWorker),
+    takeLatest(model3dActions.fetchModelRequest.type, fetchModelWorker),
+    takeLatest(model3dActions.uploadRequest.type, uploadWorker),
+    takeLatest(model3dActions.deleteRequest.type, deleteWorker),
+  ])
 }

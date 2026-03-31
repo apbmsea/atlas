@@ -1,8 +1,8 @@
-import { model3dSaga } from '@features/model3d';
-import { all } from 'typed-redux-saga';
+import { Model3dFeature } from '@features/model3d';
+import { all, fork } from 'typed-redux-saga';
 
-export default function* rootSaga() {
+export function* rootSaga() {
 	yield all([
-		model3dSaga()
+		fork(Model3dFeature.sagas.init)
 	]);
 }

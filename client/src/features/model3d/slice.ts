@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { FileInfo } from '@shared/api/files';
 
+//to types.ts
 export type Model3DState = {
   list: FileInfo[];
   current?: FileInfo | null;
@@ -24,7 +25,7 @@ const initialState: Model3DState = {
   error: null,
 };
 
-const slice = createSlice({
+export const { name, reducer, actions } = createSlice({
   name: 'model3d',
   initialState,
   reducers: {
@@ -77,6 +78,3 @@ const slice = createSlice({
     },
   },
 });
-
-export const model3dActions = slice.actions;
-export const model3dReducer = slice.reducer;

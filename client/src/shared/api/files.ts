@@ -17,7 +17,7 @@ export const FilesAPI = {
     return r.data;
   },
 
-  async list(): Promise<FileInfo[]> {
+  async list() {
     const r = await $api.get<FileInfo[]>('/files');
     return r.data;
   },
