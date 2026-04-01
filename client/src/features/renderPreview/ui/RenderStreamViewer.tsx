@@ -7,12 +7,16 @@ type Props = {
   height?: number;
 };
 
+// to feat
+
 export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
   const lastUrlRef = useRef<string | null>(null);
+
+
 
   const resolvedWsUrl = useMemo(() => {
     if (wsUrl) return wsUrl;
@@ -21,6 +25,8 @@ export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
     // return `${wsBase.replace(/\/\/[^/]+/, '//<host>:8010')}/ws/render/${modelId}`;
     return `${wsBase.replace(/\/+$/, '')}/ws/render/${modelId}`;
   }, [wsUrl, modelId]);
+
+
 
   useEffect(() => {
     setError(null);
@@ -73,6 +79,8 @@ export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
     };
   }, [resolvedWsUrl]);
 
+
+
   const sendRotate = () => {
     const ws = wsRef.current;
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
@@ -84,26 +92,21 @@ export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
     }
   };
 
+
+  
   return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <div>
+      <div>
         <button onClick={sendRotate} disabled={!connected}>Rotate</button>
-        <span style={{ fontSize: 12, color: connected ? '#4caf50' : '#999' }}>
+        <span>
           {connected ? 'connected' : 'disconnected'}
         </span>
-        {error && <span style={{ color: '#f44336', fontSize: 12 }}>{error}</span>}
+        {error && <span>{error}</span>}
       </div>
-      <div style={{
-        width: '100%',
-        height,
-        background: '#111',
-        display: 'grid',
-        placeItems: 'center',
-        border: '1px solid #333',
-      }}>
+      <div>
         {frameUrl
-          ? <img src={frameUrl} alt="render" style={{ maxWidth: '100%', maxHeight: '100%' }} />
-          : <span style={{ color: '#777' }}>Waiting for frames…</span>
+          ? <img src={frameUrl} alt="render" />
+          : <span>Waiting for frames…</span>
         }
       </div>
     </div>

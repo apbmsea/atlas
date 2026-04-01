@@ -2,8 +2,7 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-type Props = { modelUrl?: string | null; height?: number };
+import type { ModelProps } from '../types';
 
 const MAP_KEYS = [
   'map',
@@ -31,7 +30,7 @@ const disposeMaterial = (material: THREE.Material) => {
   material.dispose();
 };
 
-export const Model3DViewer = ({ modelUrl, height = 500 }: Props) => {
+export const Model3DViewer = ({ modelUrl, height = 500 }: ModelProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);

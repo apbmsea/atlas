@@ -1,18 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { FileInfo } from '@shared/api/files';
-
-//to types.ts
-export type Model3DState = {
-  list: FileInfo[];
-  current?: FileInfo | null;
-  modelUrl?: string | null;
-  loadingList: boolean;
-  loadingModel: boolean;
-  uploading: boolean;
-  deleting: boolean;
-  error?: string | null;
-};
+import type { Model3DState } from './types';
+import type { FileInfo } from '@shared/types/fileTypes';
 
 const initialState: Model3DState = {
   list: [],
@@ -37,6 +26,8 @@ export const { name, reducer, actions } = createSlice({
       state.loadingList = false; state.error = action.payload;
     },
 
+
+
     fetchModelRequest(state, _action: PayloadAction<{ objectKey: string }>) {
       state.loadingModel = true; state.error = null;
     },
@@ -52,6 +43,8 @@ export const { name, reducer, actions } = createSlice({
       state.modelUrl = null; state.current = null;
     },
 
+
+
     uploadRequest(state, _action: PayloadAction<{ file: File }>) {
       state.uploading = true; state.error = null;
     },
@@ -62,6 +55,8 @@ export const { name, reducer, actions } = createSlice({
     uploadFailure(state, action: PayloadAction<string>) {
       state.uploading = false; state.error = action.payload;
     },
+
+
 
     deleteRequest(state, _action: PayloadAction<{ objectKey: string }>) {
       state.deleting = true; state.error = null;

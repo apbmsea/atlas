@@ -1,6 +1,7 @@
 import { all, call, put, takeLatest } from 'typed-redux-saga';
-import { FilesAPI, type FileInfo } from '@shared/api/files';
-import { model3dActions } from './model/slice';
+import { actions } from './slice';
+import type { FileInfo } from '@shared/types/fileTypes';
+import { FilesAPI } from '@shared/api/instance';
 
 // Простой in-memory кэш blob-URL по objectKey
 const modelCache = new Map<string, string>(); // key -> blob url
@@ -11,14 +12,14 @@ const toError = (e: unknown) =>
 function* fetchListWorker() {
   try {
     const list = yield* call(FilesAPI.list);
-    yield* put(model3dActions.fetchListSuccess(list));
+    yield* put(actions.fetchListSuccess(list));
   } catch (e) {
-    yield* put(model3dActions.fetchListFailure(toError(e)));
+    yield* put(actions.fetchListFailure(toError(e)));
   }
 }
 
 function* fetchModelWorker(
-  action: ReturnType<typeof model3dActions.fetchModelRequest>
+  action: ReturnType<typeof actions.fetchModelRequest>
 ) {
   try {
     const { objectKey } = action.payload;
@@ -27,7 +28,7 @@ function* fetchModelWorker(
     const cached = modelCache.get(objectKey);
     if (cached) {
       const info: FileInfo = yield* call(FilesAPI.info, objectKey);
-      yield* put(model3dActions.fetchModelSuccess({ url: cached, info }));
+      yield* put(actions.fetchModelSuccess({ url: cached, info }));
       return;
     }
 
@@ -42,26 +43,30 @@ function* fetchModelWorker(
     const url = URL.createObjectURL(blob);
 
     modelCache.set(objectKey, url); // кешируем
-    yield* put(model3dActions.fetchModelSuccess({ url, info }));
+    yield* put(actions.fetchModelSuccess({ url, info }));
   } catch (e) {
-    yield* put(model3dActions.fetchModelFailure(toError(e)));
+    yield* put(actions.fetchModelFailure(toError(e)));
   }
 }
 
+
+
 function* uploadWorker(
-  action: ReturnType<typeof model3dActions.uploadRequest>
+  action: ReturnType<typeof actions.uploadRequest>
 ) {
   try {
     const { file } = action.payload;
     const info: FileInfo = yield* call(FilesAPI.upload, file);
-    yield* put(model3dActions.uploadSuccess(info));
+    yield* put(actions.uploadSuccess(info));
   } catch (e) {
-    yield* put(model3dActions.uploadFailure(toError(e)));
+    yield* put(actions.uploadFailure(toError(e)));
   }
 }
 
+
+
 function* deleteWorker(
-  action: ReturnType<typeof model3dActions.deleteRequest>
+  action: ReturnType<typeof actions.deleteRequest>
 ) {
   try {
     const { objectKey } = action.payload;
@@ -72,22 +77,17 @@ function* deleteWorker(
       modelCache.delete(objectKey);
       if (url.startsWith('blob:')) URL.revokeObjectURL(url);
     }
-    yield* put(model3dActions.deleteSuccess({ objectKey }));
+    yield* put(actions.deleteSuccess({ objectKey }));
   } catch (e) {
-    yield* put(model3dActions.deleteFailure(toError(e)));
+    yield* put(actions.deleteFailure(toError(e)));
   }
 }
 
 export function* model3dSaga() {
-  // yield* takeLatest(model3dActions.fetchListRequest.type, fetchListWorker);
-  // yield* takeLatest(model3dActions.fetchModelRequest.type, fetchModelWorker);
-  // yield* takeLatest(model3dActions.uploadRequest.type, uploadWorker);
-  // yield* takeLatest(model3dActions.deleteRequest.type, deleteWorker);
-
   yield* all([
-    takeLatest(model3dActions.fetchListRequest.type, fetchListWorker),
-    takeLatest(model3dActions.fetchModelRequest.type, fetchModelWorker),
-    takeLatest(model3dActions.uploadRequest.type, uploadWorker),
-    takeLatest(model3dActions.deleteRequest.type, deleteWorker),
+    takeLatest(actions.fetchListRequest.type, fetchListWorker),
+    takeLatest(actions.fetchModelRequest.type, fetchModelWorker),
+    takeLatest(actions.uploadRequest.type, uploadWorker),
+    takeLatest(actions.deleteRequest.type, deleteWorker),
   ])
 }

@@ -7,7 +7,7 @@ export const Model3dFeature = {
     sagas: {
         init: model3dSaga
     },
-    reducer: {[name]: reducer},
+    reducer: { [name]: reducer },
     actions
 }
 
