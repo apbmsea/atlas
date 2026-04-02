@@ -9,7 +9,8 @@ const initialState: RenderProps= {
     height: undefined,
 }
 
-export const {name, reducer, action} = createSlice({
+// add actions  
+export const {name, reducer} = createSlice({
     name: 'streamRender',
     initialState,
     reducers:{
