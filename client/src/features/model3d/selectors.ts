@@ -1,5 +1,6 @@
 import type { RootState } from '@app/store/rootReducer';
 
+// спросить про типы
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const selectors: Record<string, (s: RootState) => any> = {
   selectModel3D: (s: RootState) => s.model3d,

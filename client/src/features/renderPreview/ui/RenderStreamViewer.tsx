@@ -1,15 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { API_BASE_URL, WS_BASE_URL } from '@shared/config/apiBase';
-
-type Props = {
-  modelId: string;
-  wsUrl?: string;          // если нужен прямой URL; иначе строим из API_BASE_URL
-  height?: number;
-};
+import type { RenderProps } from '../types';
 
 // to feat
 
-export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
+export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: RenderProps) {
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
@@ -27,11 +22,14 @@ export function RenderStreamViewer({ modelId, wsUrl, height = 320 }: Props) {
   }, [wsUrl, modelId]);
 
 
-
+  
+  // slice
   useEffect(() => {
     setError(null);
+
     const ws = new WebSocket(resolvedWsUrl);
     ws.binaryType = 'arraybuffer';
+
 
     ws.onopen = () => setConnected(true);
     ws.onerror = () => setError('WebSocket error');
