@@ -1,24 +1,62 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RenderProps } from './types'
+import type { RenderStreamState } from './types';
 
+const initialState: RenderStreamState = {
+    connecting: false,
+    connected: false,
+    error: null,
 
-const initialState: RenderProps= {
-    modelId: '',
-    wsUrl: '',
-    height: undefined,
-}
+    modelId: null,
 
-// add actions  
-export const {name, reducer} = createSlice({
-    name: 'streamRender',
+    frameUrl: null,
+    lastFrameAt: null,
+
+    bytesReceived: 0,
+    dropped: 0,
+};
+export type SelectorState = typeof initialState;
+
+export const { name = 'render' as const, reducer, actions } = createSlice({
+    name: 'render',
     initialState,
-    reducers:{
-        fetchWsUrlRequest(state, _action: PayloadAction<{ wsUrl: string }>){
-            
+    reducers: {
+        connectRequest(state, action: PayloadAction<{ modelId: string }>) {
+            state.connecting = true;
+            state.connected = false;
+            state.error = null;
+            state.modelId = action.payload.modelId;
         },
-        fetchWsUrlSuccess(state, action: PayloadAction<{ wsUrl: string }>){
-            state.wsUrl = action.payload.wsUrl
-        }
-    }
-})
+        connectSuccess(state) {
+            state.connecting = false;
+            state.connected = true;
+            state.error = null;
+        },
+        connectFailure(state, action: PayloadAction<string>) {
+            state.connecting = false;
+            state.connected = false;
+            state.error = action.payload;
+        },
+        disconnected(state, action: PayloadAction<{ reason?: string } | undefined>) {
+            state.connecting = false;
+            state.connected = false;
+            state.error = action.payload?.reason ?? state.error;
+        },
+        disconnectRequest() { },
+
+        rotateRequest() { },
+
+        frameReceived(state, action: PayloadAction<{ url: string; ts: number; bytes: number }>) {
+            state.frameUrl = action.payload.url;
+            state.lastFrameAt = action.payload.ts;
+            state.bytesReceived += action.payload.bytes;
+        },
+        frameDropped(state) {
+            state.dropped += 1;
+        },
+        clearFrame(state) {
+            state.frameUrl = null;
+            state.lastFrameAt = null;
+        },
+    },
+});

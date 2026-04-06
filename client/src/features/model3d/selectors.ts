@@ -1,14 +1,16 @@
-import type { RootState } from '@app/store/rootReducer';
+import { name, type SelectorState } from './slice';
 
-export const selectors: Record<string, (s: RootState) => any> = {
-  selectModel3D: (s: RootState) => s.model3d,
-  selectFilesList: (s: RootState) => s.model3d.list,
-  selectModelUrl: (s: RootState) => s.model3d.modelUrl,
-  selectLoading: (s: RootState) => ({
-    list: s.model3d.loadingList,
-    model: s.model3d.loadingModel,
-    upload: s.model3d.uploading,
-    delete: s.model3d.deleting,
+type RootLike = { [K in typeof name]: SelectorState };
+
+export const selectors = {
+  selectModel3D: (s: RootLike) => s[name].current,
+  selectFilesList: (s: RootLike) => s[name].list,
+  selectModelUrl: (s: RootLike) => s[name].modelUrl,
+  selectLoading: (s: RootLike) => ({
+    list: s[name].loadingList,
+    model: s[name].loadingModel,
+    upload: s[name].uploading,
+    delete: s[name].deleting,
   }),
-  selectError: (s: RootState) => s.model3d.error
+  selectError: (s: RootLike) => s[name].error
 }

@@ -10,7 +10,7 @@ const ThemeToggleButton = () => {
   );
 };
 
-const HomePage: React.FC = () => {
+export const HomePage: React.FC = () => {
   return (
     <main className={style['home-page']}>
       <ThemeToggleButton />
@@ -18,5 +18,3 @@ const HomePage: React.FC = () => {
     </main>
   )
 }
-
-export default HomePage

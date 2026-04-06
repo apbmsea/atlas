@@ -14,6 +14,8 @@ const initialState: Model3DState = {
   error: null,
 };
 
+export type SelectorState = typeof initialState;
+
 export const { name, reducer, actions } = createSlice({
   name: 'model3d',
   initialState,

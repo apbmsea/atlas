@@ -1,7 +1,7 @@
 import type { HandledError } from '@shared/types/handledError.types';
 import axios from 'axios';
-import { API_BASE_URL } from '@shared/config/apiBase';
 import type { FileInfo } from '@shared/types/fileTypes';
+import { API_BASE_URL } from '@app/const/ws';
 
 export const $api = axios.create({
 	baseURL: API_BASE_URL.replace(/\/+$/, ''),

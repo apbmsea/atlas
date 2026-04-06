@@ -1,8 +1,12 @@
-import { Model3dFeature } from '@features/model3d';
 import { all, fork } from 'typed-redux-saga';
+import { Model3dFeature } from '@features/model3d';
+import { buildRenderWsUrl } from '@app/const/ws';
+import { RenderFeature } from '@features/renderPreview';
+
 
 export function* rootSaga() {
 	yield all([
+		fork(RenderFeature.sagas.init, { buildWsUrl: buildRenderWsUrl }),
 		fork(Model3dFeature.sagas.init)
 	]);
 }

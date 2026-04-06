@@ -1,11 +1,14 @@
-// import { selectors } from './selectors';
-// import { reducer, name, actions } from './slice';
+import { renderSaga } from './saga';
+import { selectors } from './selectors';
+import { reducer, name, actions } from './slice';
 
-// export const renderStreamFeature = {
-//     selectors,
-//     sagas{
-//         init: 
-//     },
-//     reduser: { [name]: reducer },
-//     actions
-// }
+export const RenderFeature = {
+  selectors,
+  sagas: {
+    init: renderSaga,
+  },
+  reducer: { [name]: reducer },
+  actions,
+};
+
+export { RenderStreamViewer } from './ui/RenderStreamViewer';

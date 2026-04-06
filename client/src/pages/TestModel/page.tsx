@@ -1,11 +1,9 @@
 import React from 'react'
 
-const TestModelPage: React.FC = () => {
+export const TestModelPage: React.FC = () => {
   return (
     <h1>
-        Page for test a mdoel
+      Page for test a mdoel
     </h1>
   )
 }
-
-export default TestModelPage
