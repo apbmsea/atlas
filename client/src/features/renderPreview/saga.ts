@@ -1,16 +1,13 @@
 import { all, call, cancelled, getContext, put, race, select, setContext, take, takeEvery, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
 import type { WsData, WsEvent } from './types';
-import type { Dispatch } from 'react';
 
-type RenderAction = ReturnType<(typeof actions)[keyof typeof actions]>;
 
 export type Deps = {
-  dispatch: Dispatch<RenderAction>;
   buildWsUrl: (id: string) => string
 }
 
-
+// в utils helper
 const toFrame = (data: WsData): { url: string; bytes: number; isBlob: boolean } | null => {
   if (data instanceof ArrayBuffer) {
     const blob = new Blob([data], { type: 'image/jpeg' });
@@ -40,6 +37,7 @@ const revoke = (url?: string | null) => {
 
 const closeActiveWS: (() => void) | null = null;
 
+// перенести в wsInstance, что бы все обработчики были сами по себе 
 function* connectWorker(deps: Deps, { payload }: ReturnType<typeof actions.connectRequest>) {
   const url = deps.buildWsUrl(payload.modelId);
   const ws = new WebSocket(url);
@@ -51,22 +49,22 @@ function* connectWorker(deps: Deps, { payload }: ReturnType<typeof actions.conne
     renderClose: () => { try { ws.close(); } catch { /* ignore */ } },
   });
 
-  ws.onopen = () => deps.dispatch(actions.connectSuccess());
-  ws.onerror = () => deps.dispatch(actions.connectFailure('WebSocket error'));
+  ws.onopen = () => (actions.connectSuccess());
+  ws.onerror = () => (actions.connectFailure('WebSocket error'));
   ws.onmessage = (e: MessageEvent) => {
     const f = toFrame(e.data as WsData);
     if (!f) return;
     revoke(prevBlob);
     prevBlob = f.isBlob ? f.url : null;
-    deps.dispatch(actions.frameReceived({ url: f.url, ts: Date.now(), bytes: f.bytes }));
+    (actions.frameReceived({ url: f.url, ts: Date.now(), bytes: f.bytes }));
   };
 
 
   yield* call(() => new Promise<void>((resolve) => {
     ws.onclose = (e: CloseEvent) => {
-      deps.dispatch(actions.disconnected({ reason: e.reason || undefined }));
+      (actions.disconnected({ reason: e.reason || undefined }));
       revoke(prevBlob);
-      deps.dispatch(actions.clearFrame());
+      (actions.clearFrame());
       resolve();
     };
   }));
