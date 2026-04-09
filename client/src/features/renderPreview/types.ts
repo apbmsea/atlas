@@ -25,5 +25,3 @@ export type WsEvent =
   | { type: 'close'; code: number; reason: string; wasClean: boolean };
 
 export type RenderProps = { modelId: string; height?: number };
-
-export type Deps = { buildWsUrl: (id: string) => string }

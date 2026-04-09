@@ -1,8 +1,14 @@
-import { all, call, cancelled, put, race, select, take, takeLatest } from 'typed-redux-saga';
-import { eventChannel, type EventChannel } from 'redux-saga';
+import { all, call, cancelled, getContext, put, race, select, setContext, take, takeEvery, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
-import type { Deps, WsData, WsEvent } from './types';
+import type { WsData, WsEvent } from './types';
+import type { Dispatch } from 'react';
 
+type RenderAction = ReturnType<(typeof actions)[keyof typeof actions]>;
+
+export type Deps = {
+  dispatch: Dispatch<RenderAction>;
+  buildWsUrl: (id: string) => string
+}
 
 
 const toFrame = (data: WsData): { url: string; bytes: number; isBlob: boolean } | null => {
@@ -32,51 +38,57 @@ const revoke = (url?: string | null) => {
   }
 };
 
-const wsChan = (url: string): EventChannel<WsEvent> => eventChannel((emit) => {
-  const ws = new WebSocket(url);
-  ws.binaryType = 'arraybuffer';
-  ws.onopen = () => emit({ type: 'open' });
-  ws.onerror = () => emit({ type: 'error' });
-  ws.onclose = (e: CloseEvent) => emit({ type: 'close', code: e.code, reason: e.reason, wasClean: e.wasClean });
-  ws.onmessage = (e) => emit({ type: 'message', data: e.data as WsData });
-  return () => { try { ws.close(); } catch {/* ignore */ } };
-});
-
-
+const closeActiveWS: (() => void) | null = null;
 
 function* connectWorker(deps: Deps, { payload }: ReturnType<typeof actions.connectRequest>) {
-  const chan: EventChannel<WsEvent> = yield* call(wsChan, deps.buildWsUrl(payload.modelId));
+  const url = deps.buildWsUrl(payload.modelId);
+  const ws = new WebSocket(url);
+  ws.binaryType = 'arraybuffer';
+
   let prevBlob: string | null = null;
-  try {
-    while (true) {
-      const { ev, stop } = yield* race({ ev: take(chan), stop: take(actions.disconnectRequest.type) });
-      if (stop) {
-        yield* put(actions.disconnected(undefined)); break;
-      }
-      if (!ev) continue;
-      if (ev.type === 'open') {
-        yield* put(actions.connectSuccess()); continue;
-      }
-      if (ev.type === 'error') {
-        yield* put(actions.connectFailure('WebSocket error')); continue;
-      }
-      if (ev.type === 'close') {
-        yield* put(actions.disconnected({ reason: ev.reason })); break;
-      }
-      if (ev.type === 'message') {
-        const f = toFrame(ev.data); if (!f) continue;
-        revoke(prevBlob); prevBlob = f.isBlob ? f.url : null;
-        yield* put(actions.frameReceived({ url: f.url, ts: Date.now(), bytes: f.bytes }));
-      }
-    }
-  } finally {
-    if (yield* cancelled()) yield* put(actions.disconnected(undefined));
+
+  yield* setContext({
+    renderClose: () => { try { ws.close(); } catch { /* ignore */ } },
+  });
+
+  ws.onopen = () => deps.dispatch(actions.connectSuccess());
+  ws.onerror = () => deps.dispatch(actions.connectFailure('WebSocket error'));
+  ws.onmessage = (e: MessageEvent) => {
+    const f = toFrame(e.data as WsData);
+    if (!f) return;
     revoke(prevBlob);
-    chan.close();
-    yield* put(actions.clearFrame());
+    prevBlob = f.isBlob ? f.url : null;
+    deps.dispatch(actions.frameReceived({ url: f.url, ts: Date.now(), bytes: f.bytes }));
+  };
+
+
+  yield* call(() => new Promise<void>((resolve) => {
+    ws.onclose = (e: CloseEvent) => {
+      deps.dispatch(actions.disconnected({ reason: e.reason || undefined }));
+      revoke(prevBlob);
+      deps.dispatch(actions.clearFrame());
+      resolve();
+    };
+  }));
+}
+
+function* disconnectWorker() {
+  const fn = closeActiveWS;
+  if (fn) {
+    yield* call(fn); // аккуратно закрываем существующее соединение
   }
 }
 
+// не работает, а хотелось бы | какой тип нужен
+// function* disconnectWorker() {
+//   const close: (() => void) | undefined = yield* getContext('renderClose');
+//   if (close) {
+//     yield* call(close);
+//   }
+// }
+
+
 export function* renderSaga(deps: Deps) {
   yield* takeLatest(actions.connectRequest.type, connectWorker, deps);
+  yield* takeEvery(actions.disconnectRequest.type, disconnectWorker);
 }
