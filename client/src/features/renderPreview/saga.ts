@@ -1,8 +1,9 @@
-import { call, takeEvery, takeLatest } from 'typed-redux-saga';
+import { call, put, takeEvery, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
 import type { Dispatch } from 'redux';
 import { toFrame } from '@shared/utils/toFrame';
 import type { WsApi } from '@shared/api/wsInstance';
+import type { WsData } from '@shared/types/ws.types';
 
 type RenderAction = ReturnType<(typeof actions)[keyof typeof actions]>;
 type Deps = {
@@ -11,29 +12,30 @@ type Deps = {
   dispatch: Dispatch<RenderAction>;
 };
 
-
+// move to utils
 const revokeBlob = (url?: string | null) => {
   if (url && url.startsWith('blob:')) { try { URL.revokeObjectURL(url); } catch { } }
 };
 
+// add js-doc vezde
 function* connectWorker(deps: Deps, { payload }: ReturnType<typeof actions.connectRequest>) {
   const url = deps.buildWsUrl(payload.modelId);
   let prevBlob: string | null = null;
 
-  yield* call([deps.ws, deps.ws.connect], url, {
-    onOpen: () => deps.dispatch(actions.connectSuccess()),
-    onError: () => deps.dispatch(actions.connectFailure('WebSocket error')),
-    onMessage: (data) => {
+  yield* call(deps.ws.connect, url, {
+    onOpen: () => put(actions.connectSuccess()),
+    onError: () => put(actions.connectFailure('WebSocket error')),
+    onMessage: (data:WsData) => {
       const f = toFrame(data);
       if (!f) return;
       revokeBlob(prevBlob);
       prevBlob = f.isBlob ? f.url : null;
-      deps.dispatch(actions.frameReceived({ url: f.url, ts: Date.now(), bytes: f.bytes }));
+      put(actions.frameReceived({ url: f.url, ts: Date.now(), bytes: f.bytes }));
     },
     onClose: ({ reason }) => {
-      deps.dispatch(actions.disconnected({ reason: reason || undefined }));
+      put(actions.disconnected({ reason }));
       revokeBlob(prevBlob);
-      deps.dispatch(actions.clearFrame());
+      put(actions.clearFrame());
     },
   });
 }
@@ -43,6 +45,6 @@ function* disconnectWorker(deps: Deps) {
 }
 
 export function* renderSaga(deps: Deps) {
-  yield* takeLatest(actions.connectRequest.type, connectWorker, deps);
-  yield* takeEvery(actions.disconnectRequest.type, disconnectWorker, deps);
+  yield* takeLatest(actions.connectRequest, connectWorker, deps);
+  yield* takeEvery(actions.disconnectRequest, disconnectWorker, deps);
 }

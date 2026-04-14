@@ -1,15 +1,21 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { name, type SelectorState } from './slice';
 
-type RootLike = { [K in typeof name]: SelectorState };
+type State = { [name]: SelectorState };
+
+const root = (state: State) => state[name]
+
+/** */
+const selectStatus = createSelector([root], (rootData) => ({
+  connecting: rootData.connecting,
+  connected: rootData.connected,
+  error: rootData.error,
+}))
 
 export const selectors = {
-  selectSlice: (s: RootLike) => s[name],
+  selectSlice: (s: State) => s[name],
 
-  selectStatus: (s: RootLike) => ({
-    connecting: s[name].connecting,
-    connected: s[name].connected,
-    error: s[name].error,
-  }),
+  selectStatus,
 
   selectFrameUrl: (s: RootLike) => s[name].frameUrl,
 

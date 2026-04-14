@@ -17,7 +17,6 @@ export const wsInstance = {
   },
 
   send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (ws && ws.readyState === WebSocket.OPEN) { try { ws.send(data as any); } catch { /* empty */ } }
   },
 
