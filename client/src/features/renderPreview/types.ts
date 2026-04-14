@@ -16,12 +16,4 @@ export type RenderStreamDeps = {
   buildWsUrl: (modelId: string) => string;
 };
 
-export type WsData = string | ArrayBuffer | Blob;
-
-export type WsEvent =
-  | { type: 'open' }
-  | { type: 'message'; data: WsData }
-  | { type: 'error' }
-  | { type: 'close'; code: number; reason: string; wasClean: boolean };
-
 export type RenderProps = { modelId: string; height?: number };

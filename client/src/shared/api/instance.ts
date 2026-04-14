@@ -1,6 +1,6 @@
 import type { HandledError } from '@shared/types/handledError.types';
 import axios from 'axios';
-import type { FileInfo } from '@shared/types/fileTypes';
+import type { FileInfo } from '@shared/types/file.types';
 import { API_BASE_URL } from '@app/const/ws';
 
 export const $api = axios.create({

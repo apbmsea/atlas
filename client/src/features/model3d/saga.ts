@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
-import type { FileInfo } from '@shared/types/fileTypes';
+import type { FileInfo } from '@shared/types/file.types';
 import { FilesAPI } from '@shared/api/instance';
 
 // Простой in-memory кэш blob-URL по objectKey

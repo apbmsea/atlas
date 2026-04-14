@@ -1,4 +1,4 @@
-import type { FileInfo } from "@shared/types/fileTypes";
+import type { FileInfo } from "@shared/types/file.types";
 
 export type Model3DState = {
   list: FileInfo[];
