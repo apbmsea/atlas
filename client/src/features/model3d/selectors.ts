@@ -1,16 +1,22 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { name, type SelectorState } from './slice';
 
-type RootLike = { [K in typeof name]: SelectorState };
+
+type State = { [name]: SelectorState };
+
+const root = (state: State) => state[name]
+
+const selectStats = createSelector([root], (rootData) => ({
+  list: rootData.loadingList,
+  model: rootData.loadingModel,
+  upload: rootData.uploading,
+  delete: rootData.deleting,
+}))
 
 export const selectors = {
-  selectModel3D: (s: RootLike) => s[name].current,
-  selectFilesList: (s: RootLike) => s[name].list,
-  selectModelUrl: (s: RootLike) => s[name].modelUrl,
-  selectLoading: (s: RootLike) => ({
-    list: s[name].loadingList,
-    model: s[name].loadingModel,
-    upload: s[name].uploading,
-    delete: s[name].deleting,
-  }),
-  selectError: (s: RootLike) => s[name].error
+  selectModel3D: (s: State) => s[name].current,
+  selectFilesList: (s: State) => s[name].list,
+  selectModelUrl: (s: State) => s[name].modelUrl,
+  selectError: (s: State) => s[name].error,
+  selectStats,
 }

@@ -1,22 +1,25 @@
-import type { WsData } from "@shared/types/ws.types";
+import type { WsData } from "@shared/types/ws";
 
-export const toFrame = (data: WsData): { url: string; bytes: number; isBlob: boolean } | null => {
-  if (data instanceof ArrayBuffer) {
-    const blob = new Blob([data], { type: 'image/jpeg' });
-    return { url: URL.createObjectURL(blob), bytes: data.byteLength, isBlob: true };
+/**
+ * Преобразует входящие WS-данные к изображению: dataURL или blob URL.
+ * @param d - полезная нагрузка сообщения WS
+ * @returns объект с url/bytes и флагом isBlob, либо null если формат не поддержан
+ */
+export const toFrame = (d: WsData) => {
+  if (d instanceof ArrayBuffer) {
+    const b = new Blob([d], { type: 'image/jpeg' });
+    return { url: URL.createObjectURL(b), bytes: d.byteLength, isBlob: true as const };
   }
-  if (data instanceof Blob) {
-    const type = data.type || 'image/jpeg';
-    const blob = new Blob([data], { type });
-    return { url: URL.createObjectURL(blob), bytes: blob.size, isBlob: true };
+  if (d instanceof Blob) {
+    const b = new Blob([d], { type: d.type || 'image/jpeg' });
+    return { url: URL.createObjectURL(b), bytes: b.size, isBlob: true as const };
   }
-  if (typeof data === 'string') {
-    if (data.startsWith('data:image/')) {
-      const bytes = Math.floor((data.length - data.indexOf(',')) * 3 / 4);
-      return { url: data, bytes, isBlob: false };
+  if (typeof d === 'string') {
+    if (d.startsWith('data:image/')) {
+      const bytes = Math.floor((d.length - d.indexOf(',')) * 3 / 4);
+      return { url: d, bytes, isBlob: false as const };
     }
-    const bytes = Math.floor(data.length * 3 / 4);
-    return { url: `data:image/jpeg;base64,${data}`, bytes, isBlob: false };
+    return { url: `data:image/jpeg;base64,${d}`, bytes: Math.floor(d.length * 3 / 4), isBlob: false as const };
   }
   return null;
 };

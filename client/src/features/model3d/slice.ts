@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Model3DState } from './types';
-import type { FileInfo } from '@shared/types/file.types';
+import type { FileInfo } from '@shared/types/file';
 
 const initialState: Model3DState = {
   list: [],

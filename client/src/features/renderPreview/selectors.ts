@@ -5,23 +5,22 @@ type State = { [name]: SelectorState };
 
 const root = (state: State) => state[name]
 
-/** */
+// исправить selectors на select status
 const selectStatus = createSelector([root], (rootData) => ({
   connecting: rootData.connecting,
   connected: rootData.connected,
   error: rootData.error,
 }))
 
+const selectStats = createSelector([root], (rootData) => ({
+  bytes: rootData.bytesReceived,
+  dropped: rootData.dropped,
+  last: rootData.lastFrameAt,
+}))
+
 export const selectors = {
   selectSlice: (s: State) => s[name],
-
+  selectFrameUrl: (s: State) => s[name].frameUrl,
   selectStatus,
-
-  selectFrameUrl: (s: RootLike) => s[name].frameUrl,
-
-  selectStats: (s: RootLike) => ({
-    bytes: s[name].bytesReceived,
-    dropped: s[name].dropped,
-    last: s[name].lastFrameAt,
-  }),
+  selectStats,
 } as const;

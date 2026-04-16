@@ -1,4 +1,4 @@
-import type { HandledError } from "@shared/types/handledError.types";
+import type { HandledError } from "@shared/types/handledError";
 
 
 export function isHandledError(error: unknown): error is HandledError {

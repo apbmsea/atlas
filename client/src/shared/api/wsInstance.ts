@@ -1,28 +1,74 @@
-import type { WsData, WsHandlers } from "@shared/types/ws.types";
+import type { WsData, WsHandlers } from '@shared/types/ws';
 
+/**
+ * Проглатывает ожидаемые ошибки (send/close при гонках).
+ * Используется вместо пустых catch.
+ * @param _err - оригинальная ошибка (не используется)
+ */
+const swallow = (_err: unknown): void => { /* intentionally ignored */ };
 let ws: WebSocket | null = null;
 
+/** Тип данных, которые принимает WebSocket */
+type SendData = Parameters<WebSocket['send']>[0];
+
+/**
+ * Инстанс WebSocket
+ */
 export const wsInstance = {
-  connect(url: string, h: WsHandlers = {}) {
-    if (ws) { try { ws.close(); } catch { /* empty */ } ws = null; }
+  /**
+   * Открывает соединение и навешивает обработчики.
+   * @param url - адрес WS-сервера
+   * @param h - колбэки жизненного цикла
+   * @returns void
+   */
+  connect(url: string, h: WsHandlers = {}): void {
+    if (ws) {
+      try { ws.close(); } catch (e) { swallow(e); }
+      ws = null;
+    }
 
-    const s = new WebSocket(url);
-    s.binaryType = 'arraybuffer';
-    ws = s;
+    const socket = new WebSocket(url);
+    socket.binaryType = 'arraybuffer';
+    ws = socket;
 
-    s.onopen = () => h.onOpen?.();
-    s.onerror = (e) => h.onError?.(e);
-    s.onmessage = (e) => h.onMessage?.(e.data as WsData);
-    s.onclose = (e) => { h.onClose?.({ code: e.code, reason: e.reason, wasClean: e.wasClean }); ws = null; };
+    socket.onopen = () => h.onOpen?.();
+    socket.onerror = (e) => h.onError?.(e);
+    socket.onmessage = (e) => h.onMessage?.(e.data as WsData);
+    socket.onclose = (e) => {
+      h.onClose?.({ code: e.code, reason: e.reason, wasClean: e.wasClean });
+      ws = null;
+    };
   },
 
-  send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
-    if (ws && ws.readyState === WebSocket.OPEN) { try { ws.send(data as any); } catch { /* empty */ } }
+  /**
+   * Отправляет данные в открытое соединение.
+   * Безопасно игнорирует вызов, если сокет не открыт.
+   * @param data - строка/буфер/Blob для отправки
+   * @returns void
+   */
+  send(data: SendData): void {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      try { ws.send(data); } catch (e) { swallow(e); }
+    }
   },
 
-  close() { if (ws) { try { ws.close(); } catch { /* empty */ } } },
+  /**
+   * Закрывает активное соединение (если оно есть).
+   * @returns void
+   */
+  close(): void {
+    if (ws) {
+      try { ws.close(); } catch (e) { swallow(e); }
+    }
+  },
 
-  isOpen() { return !!ws && ws.readyState === WebSocket.OPEN; },
+  /**
+   * Проверяет, открыто ли текущее соединение.
+   * @returns true, если сокет существует и в состоянии OPEN
+   */
+  isOpen(): boolean {
+    return !!ws && ws.readyState === WebSocket.OPEN;
+  },
 } as const;
 
 export type WsApi = typeof wsInstance;
