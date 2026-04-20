@@ -1,11 +1,9 @@
-import { model3dSaga } from './saga';
-import { selectors } from './selectors';
+import { modelViewSaga } from './saga';
 import { reducer, name, actions } from './slice';
 
-export const Model3dFeature = {
-    selectors,
+export const ModelViewFeature = {
     sagas: {
-        init: model3dSaga
+        init: modelViewSaga
     },
     reducer: { [name]: reducer },
     actions

@@ -1,77 +1,83 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Model3DState } from './types';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { FileInfo } from '@shared/types/file';
+import type { State } from './types';
+import { actions as modelDeleteActions } from '@features/modelDelete/slice';
 
-const initialState: Model3DState = {
-  list: [],
+
+const initialState: State = {
   current: null,
   modelUrl: null,
-  loadingList: false,
-  loadingModel: false,
-  uploading: false,
-  deleting: false,
+  loading: false,
   error: null,
 };
 
-export type SelectorState = typeof initialState;
-
 export const { name, reducer, actions } = createSlice({
-  name: 'model3d',
+  name: 'modelView',
   initialState,
   reducers: {
-    fetchListRequest(state) { state.loadingList = true; state.error = null; },
-    fetchListSuccess(state, action: PayloadAction<FileInfo[]>) {
-      state.loadingList = false; state.list = action.payload;
-    },
-    fetchListFailure(state, action: PayloadAction<string>) {
-      state.loadingList = false; state.error = action.payload;
+    /**
+     * Запрашивает загрузку модели по objectKey.
+     * @param _payloadAction - { objectKey }
+     */
+    fetchModelRequest(state, _payloadAction: PayloadAction<{ objectKey: string }>) {
+      state.loading = true;
+      state.error = null;
     },
 
+    /**
+     * Устанавливает URL модели и (опционально) FileInfo после успешной загрузки.
+     * @param payloadAction - { url, info? }
+     */
+    fetchModelSuccess(
+      state,
+      payloadAction: PayloadAction<{ url: string; info?: FileInfo }>
+    ) {
+      state.loading = false;
+      state.modelUrl = payloadAction.payload.url;
+      state.current = payloadAction.payload.info ?? state.current ?? null;
+    },
 
+    /**
+     * Устанавливает ошибку при загрузке модели.
+     * @param payloadAction - текст ошибки
+     */
+    fetchModelFailure(state, payloadAction: PayloadAction<string>) {
+      state.loading = false;
+      state.error = payloadAction.payload;
+    },
 
-    fetchModelRequest(state, _action: PayloadAction<{ objectKey: string }>) {
-      state.loadingModel = true; state.error = null;
-    },
-    fetchModelSuccess(state, action: PayloadAction<{ url: string; info?: FileInfo }>) {
-      state.loadingModel = false;
-      state.modelUrl = action.payload.url;
-      state.current = action.payload.info ?? state.current ?? null;
-    },
-    fetchModelFailure(state, action: PayloadAction<string>) {
-      state.loadingModel = false; state.error = action.payload;
-    },
+    /**
+     * Полностью очищает текущее состояние просмотра модели.
+     */
     clearModel(state) {
-      state.modelUrl = null; state.current = null;
+      state.modelUrl = null;
+      state.current = null;
     },
 
-
-
-    uploadRequest(state, _action: PayloadAction<{ file: File }>) {
-      state.uploading = true; state.error = null;
-    },
-    uploadSuccess(state, action: PayloadAction<FileInfo>) {
-      state.uploading = false;
-      state.list = [action.payload, ...state.list];
-    },
-    uploadFailure(state, action: PayloadAction<string>) {
-      state.uploading = false; state.error = action.payload;
+    /**
+     * Устанавливает флаг загрузки модели.
+     * @param payloadAction - true/false
+     */
+    setLoading(state, payloadAction: PayloadAction<boolean>) {
+      state.loading = payloadAction.payload;
+      state.error = null;
     },
 
-
-
-    deleteRequest(state, _action: PayloadAction<{ objectKey: string }>) {
-      state.deleting = true; state.error = null;
+    /**
+     * Устанавливает текущую модель (например, из списка).
+     * @param payloadAction - FileInfo или null
+     */
+    setCurrent(state, payloadAction: PayloadAction<FileInfo | null>) {
+      state.current = payloadAction.payload;
     },
-    deleteSuccess(state, action: PayloadAction<{ objectKey: string }>) {
-      state.deleting = false;
-      state.list = state.list.filter(f => f.objectKey !== action.payload.objectKey);
-      if (state.current?.objectKey === action.payload.objectKey) {
-        state.current = null; state.modelUrl = null;
+  },
+  extraReducers: (builder) => {
+    // Если удалили открытую сейчас модель — очищаем её в состоянии просмотра
+    builder.addCase(modelDeleteActions.deleteSuccess, (state, payloadAction) => {
+      if (state.current?.objectKey === payloadAction.payload.objectKey) {
+        state.current = null;
+        state.modelUrl = null;
       }
-    },
-    deleteFailure(state, action: PayloadAction<string>) {
-      state.deleting = false; state.error = action.payload;
-    },
+    });
   },
 });
