@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { Scene, Object3D } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { disposeObject3D } from '@shared/three/dispose';
 
@@ -11,11 +11,11 @@ import { disposeObject3D } from '@shared/three/dispose';
  * @returns ссылка на текущий Object3D модели
  */
 export function useGltfModel(
-  sceneRef: React.MutableRefObject<THREE.Scene | null>,
+  sceneRef: React.MutableRefObject<Scene | null>,
   modelUrl: string | null | undefined,
   targetSize: number = 3
 ) {
-  const modelRef = useRef<THREE.Object3D | null>(null);
+  const modelRef = useRef<Object3D | null>(null);
 
   useEffect(() => {
     const scene = sceneRef.current;

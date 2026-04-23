@@ -1,6 +1,6 @@
 import type { FileInfo } from "@shared/types/file";
 
-export type State = {
+export type Model3DState = {
   current: FileInfo | null;
   modelUrl: string | null;
   loading: boolean;

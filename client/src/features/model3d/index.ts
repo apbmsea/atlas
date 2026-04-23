@@ -6,7 +6,7 @@ export const ModelViewFeature = {
         init: modelViewSaga
     },
     reducer: { [name]: reducer },
-    actions
+    actions,
 }
 
 export { Model3DViewer } from './ui/Viewer';

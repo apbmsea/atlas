@@ -7,6 +7,8 @@ import { toError } from '@shared/utils/isHandledError';
 
 /**
  * Загружает модель для просмотра.
+ * @param action.payload
+ * @param action.payload.objectKey
  */
 function* fetchModelWorker(action: ReturnType<typeof actions.fetchModelRequest>) {
   try {
@@ -39,5 +41,5 @@ function* fetchModelWorker(action: ReturnType<typeof actions.fetchModelRequest>)
  * Вотчер для загрузки модели.
  */
 export function* modelViewSaga() {
-  yield* takeLatest(actions.fetchModelRequest.type, fetchModelWorker);
+  yield* takeLatest(actions.fetchModelRequest, fetchModelWorker);
 }
