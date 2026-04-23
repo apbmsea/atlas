@@ -21,5 +21,5 @@ function* uploadWorker(action: ReturnType<typeof actions.uploadRequest>) {
  * Вотчер для загрузки модели.
  */
 export function* modelUploadSaga() {
-  yield* takeLatest(actions.uploadRequest.type, uploadWorker);
+  yield* takeLatest(actions.uploadRequest, uploadWorker);
 }

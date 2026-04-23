@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { RenderFeature } from '@features/renderPreview';
-import { ModelViewFeature } from "@features/model3d";
+import { ModelViewFeature } from "@features/model-view";
 import { ModelsListFeature } from "@features/modelsList";
 import { ModelUploadFeature } from "@features/modelUpload";
 import { ModelDeleteFeature } from "@features/modelDelete";

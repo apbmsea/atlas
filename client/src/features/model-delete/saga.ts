@@ -25,5 +25,5 @@ function* deleteWorker(action: ReturnType<typeof actions.deleteRequest>) {
  * Вотчер для удаления модели.
  */
 export function* modelDeleteSaga() {
-  yield* takeLatest(actions.deleteRequest.type, deleteWorker);
+  yield* takeLatest(actions.deleteRequest, deleteWorker);
 }

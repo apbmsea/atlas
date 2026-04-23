@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { FileInfo } from '@shared/types/file';
 import type { Model3DState } from './types';
-import { actions as modelDeleteActions } from '@features/modelDelete/slice';
+import { actions as modelDeleteActions } from '@features/model-delete/slice';
 
 
 const initialState: Model3DState = {

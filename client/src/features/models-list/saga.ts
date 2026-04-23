@@ -19,5 +19,5 @@ function* fetchListWorker() {
  * Вотчер для списка моделей.
  */
 export function* modelsListSaga() {
-  yield* takeLatest(actions.fetchListRequest.type, fetchListWorker);
+  yield* takeLatest(actions.fetchListRequest, fetchListWorker);
 }

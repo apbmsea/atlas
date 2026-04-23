@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { State } from './type';
+import type { ModelDeleteState } from './type';
 
-const initialState: State = {
+const initialState: ModelDeleteState = {
   deleting: false,
   error: null
 };

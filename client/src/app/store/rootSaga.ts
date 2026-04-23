@@ -1,12 +1,12 @@
 import { all, fork } from 'typed-redux-saga';
 import { buildRenderWsUrl } from '@app/const/ws';
-import { RenderFeature } from '@features/renderPreview';
+import { RenderFeature } from '@features/render-preview';
 import { store } from './store';
 import { wsInstance } from '@shared/api/wsInstance';
-import { ModelsListFeature } from '@features/modelsList';
-import { modelViewSaga } from '@features/model3d/saga';
-import { modelUploadSaga } from '@features/modelUpload/saga';
-import { modelDeleteSaga } from '@features/modelDelete/saga';
+import { ModelsListFeature } from '@features/models-list';
+import { ModelViewFeature } from '@features/model-view';
+import { ModelUploadFeature } from '@features/model-upload';
+import { ModelDeleteFeature } from '@features/model-delete';
 
 
 export function* rootSaga() {
@@ -16,10 +16,10 @@ export function* rootSaga() {
 			ws: wsInstance,
 			dispatch: store.dispatch,
 		}),
-		
+
 		fork(ModelsListFeature.sagas.init),
-		fork(modelViewSaga),
-		fork(modelUploadSaga),
-		fork(modelDeleteSaga),
+		fork(ModelViewFeature.sagas.init),
+		fork(ModelUploadFeature.sagas.init),
+		fork(ModelDeleteFeature.sagas.init),
 	]);
 }
