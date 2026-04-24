@@ -1,6 +1,6 @@
 import { all } from 'typed-redux-saga';
 
-export default function* rootSaga() {
+export function* rootSaga() {
 	yield all([
 	]);
 }

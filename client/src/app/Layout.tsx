@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { ThemeProvider } from 'atlas-ui-kit';
 import 'atlas-ui-kit/dist/styles.css';
 
-const Layout = () => {
+export const Layout = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -19,5 +19,3 @@ const Layout = () => {
 		</ThemeProvider>
 	);
 };
-
-export default Layout;
