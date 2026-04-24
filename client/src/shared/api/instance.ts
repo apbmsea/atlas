@@ -44,7 +44,7 @@ $api.interceptors.response.use(
 		switch (handledError.status) {
 			case 400:
 				return Promise.reject(handledError);
-				
+
 			case 401:
 				if (!originalRequest._isRetry) {
 					originalRequest._isRetry = true;
