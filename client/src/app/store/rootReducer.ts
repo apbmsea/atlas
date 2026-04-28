@@ -1,6 +1,16 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import { RenderFeature } from '@features/renderPreview';
+import { ModelViewFeature } from "@features/model-view";
+import { ModelsListFeature } from "@features/modelsList";
+import { ModelUploadFeature } from "@features/modelUpload";
+import { ModelDeleteFeature } from "@features/modelDelete";
 
-const rootReducer = combineReducers({
+
+export const rootReducer = combineReducers({
+  ...RenderFeature.reducer,
+  ...ModelsListFeature.reducer,
+  ...ModelViewFeature.reducer,
+  ...ModelUploadFeature.reducer,
+  ...ModelDeleteFeature.reducer,
 });
-
-export default rootReducer;
+export type RootState = ReturnType<typeof rootReducer>;

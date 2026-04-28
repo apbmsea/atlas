@@ -1,10 +1,13 @@
-import type { HandledError } from '@shared/types/handledError.types';
+import type { HandledError } from '@shared/types/handledError';
 import axios from 'axios';
+import type { FileInfo } from '@shared/types/file';
+import { API_BASE_URL } from '@app/const/ws';
 
 export const $api = axios.create({
-	baseURL: import.meta.env.VITE_SERVER_URL,
+	baseURL: API_BASE_URL.replace(/\/+$/, ''),
+	// baseURL: import.meta.env.VITE_SERVER_URL,
 	// withCredentials: true,
-	timeout: 10000
+	timeout: 15000
 });
 
 $api.interceptors.request.use(config => {
@@ -44,7 +47,7 @@ $api.interceptors.response.use(
 		switch (handledError.status) {
 			case 400:
 				return Promise.reject(handledError);
-				
+
 			case 401:
 				if (!originalRequest._isRetry) {
 					originalRequest._isRetry = true;
@@ -70,3 +73,42 @@ $api.interceptors.response.use(
 		return Promise.reject(handledError);
 	}
 );
+
+
+
+export const FilesAPI = {
+	async upload(file: File): Promise<FileInfo> {
+		const form = new FormData();
+		form.append('file', file);
+		const r = await $api.post<FileInfo>('/files/upload', form, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		});
+		return r.data;
+	},
+
+	async list() {
+		const r = await $api.get<FileInfo[]>('/files');
+		return r.data;
+	},
+
+	async info(objectKey: string): Promise<FileInfo> {
+		const key = encodeURIComponent(objectKey);
+		const r = await $api.get<FileInfo>(`/files/${key}`);
+		return r.data;
+	},
+
+	// glTF (JSON) с embedded base64. Увеличенный таймаут.
+	async gltf(objectKey: string): Promise<string> {
+		const key = encodeURIComponent(objectKey);
+		const r = await $api.get<string>(`/files/${key}/gltf`, {
+			responseType: 'text',
+			timeout: 120_000,
+		});
+		return r.data;
+	},
+
+	async remove(objectKey: string): Promise<any> {
+		const key = encodeURIComponent(objectKey);
+		return await $api.delete(`/files/${key}`);
+	},
+};

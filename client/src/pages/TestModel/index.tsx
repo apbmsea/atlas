@@ -1,0 +1,1 @@
+export { TestModelPage } from './page'
