@@ -1,0 +1,60 @@
+html[data-theme='dark'] {
+	.menu-page {
+		&__block {
+			background: var(--background-island);
+		}
+	}
+}
+
+.menu-page {
+	padding-inline: 80px;
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&__content {
+		width: 100%;
+		display: flex;
+		gap: 70px;
+	}
+
+	&__block {
+		width: 100%;
+		height: 700px;
+		backdrop-filter: blur(4px);
+		background: rgba(0, 0, 0, 0.05);
+		border: 1px solid var(--stroke);
+		border-radius: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		background: rgba(0, 0, 0, 0.05);
+        transition: all 0.5s ease-in-out;
+
+        &:hover {
+            transform:translateX(10px)
+        }
+
+		&-title {
+			font-weight: 300;
+			font-size: 28px;
+			line-height: 150%;
+			text-align: center;
+			color: var(--text-invert-primary);
+			text-transform: uppercase;
+		}
+	}
+}
+
+.bg-light {
+	position: absolute;
+	inset: 0;
+	background: url('/background-light.png') center / contain no-repeat;
+	z-index: -2;
+	border-radius: 100%;
+	filter: blur(75px);
+}

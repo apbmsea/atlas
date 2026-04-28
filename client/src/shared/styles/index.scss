@@ -1,1 +1,11 @@
 @use './globals.scss';
+
+#root {
+   
+}
+
+.app-layout {
+     height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
