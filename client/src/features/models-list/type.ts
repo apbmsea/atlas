@@ -1,6 +1,6 @@
 import type { FileInfo } from "@shared/types/file";
 
-export type State = {
+export type ModelListState = {
   list: FileInfo[];
   loading: boolean;
   error: string | null;

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { State } from './type';
+import type { ModelDeleteState } from './type';
 
-const initialState: State = {
+const initialState: ModelDeleteState = {
   deleting: false,
   error: null
 };
@@ -36,15 +36,6 @@ export const { name, reducer, actions } = createSlice({
     deleteFailure(state, payloadAction: PayloadAction<string>) {
       state.deleting = false;
       state.error = payloadAction.payload;
-    },
-
-    /**
-     * Устанавливает флаг "идёт удаление".
-     * @param payloadAction - true/false
-     */
-    setDeleting(state, payloadAction: PayloadAction<boolean>) {
-      state.deleting = payloadAction.payload;
-      state.error = null;
     },
   },
 });

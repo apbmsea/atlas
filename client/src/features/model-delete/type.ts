@@ -1,4 +1,4 @@
-export type State = {
+export type ModelDeleteState = {
   deleting: boolean;
   error: string | null
 };

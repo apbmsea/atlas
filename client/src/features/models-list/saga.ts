@@ -4,7 +4,8 @@ import { FilesAPI } from '@shared/api/instance';
 import { toError } from '@shared/utils/isHandledError';
 
 /**
- * Загружает список моделей из API.
+ * Загружает список моделей из API и кладёт результат в стор.
+ * @returns Generator — эффекты redux-saga
  */
 function* fetchListWorker() {
   try {
@@ -19,5 +20,5 @@ function* fetchListWorker() {
  * Вотчер для списка моделей.
  */
 export function* modelsListSaga() {
-  yield* takeLatest(actions.fetchListRequest.type, fetchListWorker);
+  yield* takeLatest(actions.fetchListRequest, fetchListWorker);
 }

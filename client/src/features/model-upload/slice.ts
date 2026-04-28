@@ -1,9 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { FileInfo } from '@shared/types/file';
-import type { State } from './type';
+import type { ModelUploadState } from './type';
 
 
-const initialState: State = {
+const initialState: ModelUploadState = {
   uploading: false,
   error: null
 };

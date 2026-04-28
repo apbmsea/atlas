@@ -1,10 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { FileInfo } from '@shared/types/file';
-import { actions as modelUploadActions } from '@features/modelUpload/slice';
-import { actions as modelDeleteActions } from '@features/modelDelete/slice';
-import type { State } from './type';
+import { actions as modelUploadActions } from '@features/model-upload/slice';
+import { actions as modelDeleteActions } from '@features/model-delete/slice';
+import type { ModelListState } from './type';
 
-const initialState: State = {
+const initialState: ModelListState = {
   list: [],
   loading: false,
   error: null
