@@ -4,7 +4,9 @@ import { FilesAPI } from '@shared/api/instance';
 import { toError } from '@shared/utils/isHandledError';
 
 /**
- * Загружает модель в хранилище.
+ * Загружает файл модели в хранилище.
+ * @param action - экшен uploadRequest с payload { file: File }
+ * @returns Generator — эффекты redux-saga
  */
 function* uploadWorker(action: ReturnType<typeof actions.uploadRequest>) {
   try {

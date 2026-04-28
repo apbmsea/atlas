@@ -5,7 +5,9 @@ import { modelBlobCache } from '@shared/utils/modelBlobCache';
 import { toError } from '@shared/utils/isHandledError';
 
 /**
- * Удаляет модель и чистит кэш blob‑URL.
+ * Удаляет модель из хранилища и очищает blob-URL в кэше.
+ * @param action - экшен deleteRequest с payload { objectKey: string }
+ * @returns Generator — эффекты redux-saga
  */
 function* deleteWorker(action: ReturnType<typeof actions.deleteRequest>) {
   try {
