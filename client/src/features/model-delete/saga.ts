@@ -11,7 +11,6 @@ import { toError } from '@shared/utils/isHandledError';
  */
 function* deleteWorker(action: ReturnType<typeof actions.deleteRequest>) {
   try {
-    yield* put(actions.setDeleting(true));
     const { objectKey } = action.payload;
 
     yield* call(FilesAPI.remove, objectKey);

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Scene, Object3D } from 'three';
+import { Scene, Object3D, Box3 } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { disposeObject3D } from '@shared/three/dispose';
 
@@ -40,7 +40,7 @@ export function useGltfModel(
         if (!root) return;
 
         // автоцентрирование и нормализация масштаба
-        const bbox = new THREE.Box3().setFromObject(root);
+        const bbox = new Box3().setFromObject(root);
         const diagonal = bbox.getSize(new THREE.Vector3()).length() || 1;
         const center = bbox.getCenter(new THREE.Vector3());
 

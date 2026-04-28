@@ -37,14 +37,5 @@ export const { name, reducer, actions } = createSlice({
       state.deleting = false;
       state.error = payloadAction.payload;
     },
-
-    /**
-     * Устанавливает флаг "идёт удаление".
-     * @param payloadAction - true/false
-     */
-    setDeleting(state, payloadAction: PayloadAction<boolean>) {
-      state.deleting = payloadAction.payload;
-      state.error = null;
-    },
   },
 });
