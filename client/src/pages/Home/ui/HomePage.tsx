@@ -1,20 +1,22 @@
-import React from 'react'
-import style from './HomePage.module.scss'
-import { Button } from 'atlas-ui-kit'
-import { useTheme } from 'atlas-ui-kit';
-
-const ThemeToggleButton = () => {
-  const { toggleTheme } = useTheme();
-  return (
-    <button onClick={toggleTheme}>Сменить тему</button>
-  );
-};
+import React from 'react';
+import style from './HomePage.module.scss';
+import { Button } from 'atlas-ui-kit';
+import { useNavigate } from 'react-router-dom';
 
 export const HomePage: React.FC = () => {
-  return (
-    <main className={style['home-page']}>
-      <ThemeToggleButton />
-      <Button>Привет</Button>
-    </main>
-  )
-}
+	const navigate = useNavigate()
+	return (
+		<main className={style['home-page']}>
+			<div className={style['bg-light']} />
+			<div className={style['bg-human']} />
+
+			<div className={style['content']}>
+				<h1 className={style['home-page__title']}>
+					Атлас организма человека
+				</h1>
+				{/* <p>Подготавливаем срезы и модели...</p> */}
+				<Button onClick={() => navigate('menu')} variant='secondary'>Начать</Button>
+			</div>
+		</main>
+	);
+};

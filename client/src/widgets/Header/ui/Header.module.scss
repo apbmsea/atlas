@@ -1,0 +1,18 @@
+.header {
+    z-index: 2;
+	padding: 40px 80px;
+	width: 100%;
+	display: flex;
+    align-items: center;
+	justify-content: space-between;
+
+	&__content {
+		display: flex;
+		align-items: center;
+        gap: 40px;
+
+		&-link {
+			white-space: nowrap;
+		}
+	}
+}
