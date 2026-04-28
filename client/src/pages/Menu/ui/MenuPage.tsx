@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './MenuPage.module.scss';
 
-const MenuPage: React.FC = () => {
+export const MenuPage: React.FC = () => {
 	return (
 		<main className={style['menu-page']}>
 			<div className={style['bg-light']} />
@@ -17,5 +17,3 @@ const MenuPage: React.FC = () => {
 		</main>
 	);
 };
-
-export default MenuPage;
