@@ -9,7 +9,7 @@ const ThemeToggleButton = () => {
 	return <button onClick={toggleTheme}>Сменить тему</button>;
 };
 
-const Header = () => {
+export const Header = () => {
 	return (
 		<header className={style['header']}>
 			<Link to='home'>логотип</Link>
@@ -52,5 +52,3 @@ const Header = () => {
 		</header>
 	);
 };
-
-export default Header;

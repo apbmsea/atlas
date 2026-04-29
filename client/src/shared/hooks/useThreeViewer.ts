@@ -1,12 +1,14 @@
-import { setRendererColorSpace } from '@shared/three/compat';
 import { useEffect, useRef } from 'react';
+import { setRendererColorSpace } from '@shared/three/compat';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
+
+
 
 /**
  * Инициализирует трёхмерную сцену: Scene, Camera, Renderer, OrbitControls, свет, сетку, resize и rAF.
  * @param height - высота канваса в px
- * @returns ссылки на контейнер и основные сущности THREE (renderer/scene/camera/controls)
+ * @returns ссылки на контейнер и сущности THREE
  */
 export function useThreeViewer(height: number) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -32,24 +34,20 @@ export function useThreeViewer(height: number) {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    setRendererColorSpace(renderer); // ← вместо ts-expect-error/ignore
+    setRendererColorSpace(renderer);
 
     container.appendChild(renderer.domElement);
 
-    // Свет и ориентиры
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
     const dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.position.set(3, 10, 10);
     const grid = new THREE.GridHelper(10, 10);
     grid.position.y = -0.0001;
-
     scene.add(hemiLight, dirLight, grid);
 
-    // Контролы
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // Resize — через ResizeObserver, чтобы ловить изменения контейнера
     const handleResize = () => {
       const nextWidth = container.clientWidth;
       camera.aspect = nextWidth / height;
@@ -60,7 +58,6 @@ export function useThreeViewer(height: number) {
     ro.observe(container);
     resizeObserverRef.current = ro;
 
-    // Рендер-цикл
     const animate = () => {
       controls.update();
       renderer.render(scene, camera);
@@ -75,7 +72,6 @@ export function useThreeViewer(height: number) {
 
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-
       resizeObserverRef.current?.disconnect();
       resizeObserverRef.current = null;
 

@@ -107,7 +107,7 @@ export const FilesAPI = {
 		return r.data;
 	},
 
-	async remove(objectKey: string): Promise<any> {
+	async remove(objectKey: string): Promise<unknown> {
 		const key = encodeURIComponent(objectKey);
 		return await $api.delete(`/files/${key}`);
 	},

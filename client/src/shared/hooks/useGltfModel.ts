@@ -1,27 +1,25 @@
 import { useEffect, useRef } from 'react';
-import { Scene, Object3D, Box3 } from 'three';
-import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'three';
 import { disposeObject3D } from '@shared/three/dispose';
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 
 /**
- * Загружает/отгружает glTF‑модель в/из сцены. Центрирует и масштабирует модель.
- * @param sceneRef - ссылка на THREE.Scene, куда монтировать модель
- * @param modelUrl - URL glTF (может быть blob:)
- * @param targetSize - желаемый размер (диагональ) нормализованной модели
- * @returns ссылка на текущий Object3D модели
+ * Загружает/выгружает glTF‑модель в сцену. Центрирует и нормализует масштаб.
+ * @param sceneRef - ссылка на THREE.Scene
+ * @param modelUrl - URL glTF (возможно blob:)
+ * @param targetSize - целевая диагональ нормализованной модели
  */
 export function useGltfModel(
-  sceneRef: React.MutableRefObject<Scene | null>,
+  sceneRef: React.MutableRefObject<THREE.Scene | null>,
   modelUrl: string | null | undefined,
   targetSize: number = 3
 ) {
-  const modelRef = useRef<Object3D | null>(null);
+  const modelRef = useRef<THREE.Object3D | null>(null);
 
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
 
-    // удалить прежнюю модель
     if (modelRef.current) {
       scene.remove(modelRef.current);
       disposeObject3D(modelRef.current);
@@ -35,12 +33,11 @@ export function useGltfModel(
 
     loader.load(
       modelUrl,
-      (gltf: GLTF) => {
+      (gltf) => {
         const root = gltf.scene ?? gltf.scenes?.[0];
         if (!root) return;
 
-        // автоцентрирование и нормализация масштаба
-        const bbox = new Box3().setFromObject(root);
+        const bbox = new THREE.Box3().setFromObject(root);
         const diagonal = bbox.getSize(new THREE.Vector3()).length() || 1;
         const center = bbox.getCenter(new THREE.Vector3());
 
@@ -51,14 +48,11 @@ export function useGltfModel(
         modelRef.current = root;
       },
       undefined,
-      // Ошибку можно пробрасывать наружу через колбэк, пока просто игнорируем
-      // чтобы не спамить консоль — соответствие правилам eslint
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (_error: unknown) => { }
+      (_error) => { }
     );
 
     return () => {
-      // ревокаем только входящий blob: URL, если это наш локальный объект
       if (!revoked && modelUrl.startsWith('blob:')) {
         try { URL.revokeObjectURL(modelUrl); } catch { /* ignore */ }
         revoked = true;

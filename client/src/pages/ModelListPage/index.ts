@@ -1,0 +1,1 @@
+export { ModelsListPage } from './ui/page';

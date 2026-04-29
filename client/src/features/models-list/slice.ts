@@ -26,9 +26,9 @@ export const { name, reducer, actions } = createSlice({
      * Устанавливает список моделей после успешной загрузки.
      * @param payloadAction - список файлов
      */
-    fetchListSuccess(state, payloadAction: PayloadAction<FileInfo[]>) {
+    fetchListSuccess(state, action: PayloadAction<FileInfo[]>) {
       state.loading = false;
-      state.list = payloadAction.payload;
+      state.list = Array.isArray(action.payload) ? action.payload : [];
     },
 
     /**

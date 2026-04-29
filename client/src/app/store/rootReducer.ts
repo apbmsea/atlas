@@ -1,9 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { RenderFeature } from '@features/renderPreview';
+import { RenderFeature } from '@features/render-preview';
 import { ModelViewFeature } from "@features/model-view";
-import { ModelsListFeature } from "@features/modelsList";
-import { ModelUploadFeature } from "@features/modelUpload";
-import { ModelDeleteFeature } from "@features/modelDelete";
+import { ModelsListFeature } from "@features/models-list";
+import { ModelUploadFeature } from "@features/model-upload";
+import { ModelDeleteFeature } from "@features/model-delete";
 
 
 export const rootReducer = combineReducers({

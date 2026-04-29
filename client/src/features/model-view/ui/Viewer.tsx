@@ -1,6 +1,6 @@
 import React from 'react';
-import { useThreeViewer } from '../../../shared/hooks/useThreeViewer';
-import { useGltfModel } from '../../../shared/hooks/useGltfModel';
+import { useThreeViewer } from '@shared/hooks/useThreeViewer';
+import { useGltfModel } from '@shared/hooks/useGltfModel';
 import type { ModelProps } from '../types';
 
 /**

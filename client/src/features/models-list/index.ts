@@ -1,10 +1,13 @@
 import { modelsListSaga } from './saga';
+import { selectors } from './selectors';
 import { reducer, name, actions } from './slice';
 
+// если хочешь — дополнительно реэкспортируй раздельные селекторы
+export { selectModels, selectModelsLoading, selectModelsError, selectModelsListState } from './selectors';
+
 export const ModelsListFeature = {
-  sagas: {
-    init: modelsListSaga
-  },
+  selectors,
   reducer: { [name]: reducer },
-  actions
-}
+  sagas: { init: modelsListSaga },
+  actions,
+} as const;
