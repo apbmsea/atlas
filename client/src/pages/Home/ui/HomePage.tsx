@@ -15,7 +15,7 @@ export const HomePage: React.FC = () => {
 					Атлас организма человека
 				</h1>
 				{/* <p>Подготавливаем срезы и модели...</p> */}
-				<Button onClick={() => navigate('menu')} variant='secondary'>Начать</Button>
+				<Button onClick={() => navigate('/menu')} variant='secondary'>Начать</Button>
 			</div>
 		</main>
 	);

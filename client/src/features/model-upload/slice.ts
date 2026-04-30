@@ -25,7 +25,7 @@ export const { name, reducer, actions } = createSlice({
      * Устанавливает результат успешной загрузки файла.
      * @param payloadAction - FileInfo загруженного файла
      */
-    uploadSuccess(state, payloadAction: PayloadAction<FileInfo>) {
+    uploadSuccess(state, _payloadAction: PayloadAction<FileInfo>) {
       state.uploading = false;
       state.error = null;
       // список обновляется в modelsList через extraReducers

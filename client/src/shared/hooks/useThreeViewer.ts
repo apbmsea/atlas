@@ -26,7 +26,7 @@ export function useThreeViewer(height: number) {
     const width = container.clientWidth;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x111111);
+    scene.background = new THREE.Color("#0a0a0a");
 
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
     camera.position.set(2, 2, 4);

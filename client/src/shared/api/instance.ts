@@ -3,6 +3,29 @@ import axios from 'axios';
 import type { FileInfo } from '@shared/types/file';
 import { API_BASE_URL } from '@app/const/ws';
 
+type BackendFileDTO = {
+	// backend (Spring) returns FileDTO with these field names:
+	// s3ObjectKey, fileType, fileName, size
+	s3ObjectKey?: string;
+	fileType?: string;
+	fileName?: string;
+	size?: number;
+	// in case of future backend changes
+	objectKey?: string;
+	contentType?: string;
+	createdAt?: string;
+};
+
+const mapBackendFileDtoToFileInfo = (dto: BackendFileDTO): FileInfo => {
+	// our UI expects: objectKey, contentType, size, createdAt
+	return {
+		objectKey: dto.s3ObjectKey ?? dto.objectKey ?? dto.fileName ?? '',
+		contentType: dto.fileType ?? dto.contentType,
+		size: dto.size,
+		createdAt: dto.createdAt,
+	};
+};
+
 export const $api = axios.create({
 	baseURL: API_BASE_URL.replace(/\/+$/, ''),
 	// baseURL: import.meta.env.VITE_SERVER_URL,
@@ -80,21 +103,21 @@ export const FilesAPI = {
 	async upload(file: File): Promise<FileInfo> {
 		const form = new FormData();
 		form.append('file', file);
-		const r = await $api.post<FileInfo>('/files/upload', form, {
+		const r = await $api.post<BackendFileDTO>('/files/upload', form, {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		});
-		return r.data;
+		return mapBackendFileDtoToFileInfo(r.data);
 	},
 
 	async list() {
-		const r = await $api.get<FileInfo[]>('/files');
-		return r.data;
+		const r = await $api.get<BackendFileDTO[]>('/files');
+		return r.data.map(mapBackendFileDtoToFileInfo);
 	},
 
 	async info(objectKey: string): Promise<FileInfo> {
 		const key = encodeURIComponent(objectKey);
-		const r = await $api.get<FileInfo>(`/files/${key}`);
-		return r.data;
+		const r = await $api.get<BackendFileDTO>(`/files/${key}`);
+		return mapBackendFileDtoToFileInfo(r.data);
 	},
 
 	// glTF (JSON) с embedded base64. Увеличенный таймаут.

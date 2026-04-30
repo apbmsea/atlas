@@ -1,6 +1,6 @@
-import { actions } from '@features/renderPreview/slice';
+import { actions } from '@features/render-preview/slice';
 
-export type WsData = string | ArrayBuffer | Blob;
+export type WsData = string | ArrayBuffer | Blob | ArrayBufferView;
 export type RenderAction = ReturnType<(typeof actions)[keyof typeof actions]>;
 
 export type WsHandlers = {

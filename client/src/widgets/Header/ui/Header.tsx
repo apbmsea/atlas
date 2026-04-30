@@ -1,20 +1,17 @@
 import { Link } from 'react-router-dom';
 import style from './Header.module.scss';
 import { TextField } from 'atlas-ui-kit';
-import { Button } from 'atlas-ui-kit';
-import { useTheme } from 'atlas-ui-kit';
 
-const ThemeToggleButton = () => {
-	const { toggleTheme } = useTheme();
-	return <button onClick={toggleTheme}>Сменить тему</button>;
-};
+// const ThemeToggleButton = () => {
+// 	const { toggleTheme } = useTheme();
+// 	return <button onClick={toggleTheme}>Сменить тему</button>;
+// };
 
 export const Header = () => {
 	return (
 		<header className={style['header']}>
-			<Link to='home'>логотип</Link>
+			<Link to='/home'>логотип</Link>
 			<div className={style['header__content']}>
-				<ThemeToggleButton />
 				<TextField
 					leftIcon={
 						<svg
@@ -42,10 +39,10 @@ export const Header = () => {
 					}
 					placeholder='Поиск'
 				/>
-				<Link className={style['header__content-link']} to='shop'>
+				<Link className={style['header__content-link']} to='/shop'>
 					магазин
 				</Link>
-				<Link className={style['header__content-link']} to='profile'>
+				<Link className={style['header__content-link']} to='/profile'>
 					личный кабинет
 				</Link>
 			</div>

@@ -1,12 +1,13 @@
 import { setNavigate } from '@shared/utils/navigate';
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { ThemeProvider } from 'atlas-ui-kit';
 import 'atlas-ui-kit/dist/styles.css';
 import { Header } from '@widgets/Header';
 
-const Layout = () => {
+export const Layout = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	useEffect(() => {
 		setNavigate(navigate);
@@ -15,11 +16,9 @@ const Layout = () => {
 	return (
 		<ThemeProvider>
 			<div className='app-layout'>
-				<Header />
+				{!location.pathname.startsWith('/modelList') && <Header />}
 				<Outlet />
 			</div>
 		</ThemeProvider>
 	);
 };
-
-export default Layout;

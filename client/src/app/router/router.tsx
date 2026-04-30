@@ -1,8 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '@app/Layout';
+import {Layout} from '@app/Layout';
 import { HomePage } from '@pages/Home';
 import { MenuPage } from '@pages/Menu';
 import { ModelsListPage } from '@pages/ModelListPage';
+import { ProfilePage } from '@pages/Profile';
 import { NotFoundPage } from '@pages/NotFound';
 
 export const router = createBrowserRouter([
@@ -11,8 +12,10 @@ export const router = createBrowserRouter([
 		element: <Layout />,
 		children: [
 			{ index: true, element: <HomePage /> },
+			{ path: 'home', element: <HomePage /> },
 			{ path: 'menu', element: <MenuPage /> },
 			{ path: 'modelList', element: <ModelsListPage /> },
+			{ path: 'profile', element: <ProfilePage /> },
 			{ path: '*', element: <NotFoundPage /> },
 
 		]

@@ -7,6 +7,7 @@ import type { WsData, WsHandlers } from '@shared/types/ws';
  */
 const swallow = (_err: unknown): void => { /* intentionally ignored */ };
 let ws: WebSocket | null = null;
+let connId = 0;
 
 /** Тип данных, которые принимает WebSocket */
 type SendData = Parameters<WebSocket['send']>[0];
@@ -22,19 +23,40 @@ export const wsInstance = {
    * @returns void
    */
   connect(url: string, h: WsHandlers = {}): void {
+    // Avoid closing an in-flight CONNECTING socket.
+    // In React dev/StrictMode connect/disconnect races can trigger:
+    // "WebSocket is closed before the connection is established".
     if (ws) {
-      try { ws.close(); } catch (e) { swallow(e); }
+      try {
+        if (ws.readyState === WebSocket.OPEN) ws.close();
+      } catch (e) {
+        swallow(e);
+      }
       ws = null;
     }
 
+    const myId = ++connId;
+
     const socket = new WebSocket(url);
-    socket.binaryType = 'arraybuffer';
+    // Backend sends JPEG bytes as binary messages.
+    // The original app uses `binaryType='blob'`, so keep the same format for easier rendering.
+    socket.binaryType = 'blob';
     ws = socket;
 
-    socket.onopen = () => h.onOpen?.();
-    socket.onerror = (e) => h.onError?.(e);
-    socket.onmessage = (e) => h.onMessage?.(e.data as WsData);
+    socket.onopen = () => {
+      if (myId !== connId) return;
+      h.onOpen?.();
+    };
+    socket.onerror = (e) => {
+      if (myId !== connId) return;
+      h.onError?.(e);
+    };
+    socket.onmessage = (e) => {
+      if (myId !== connId) return;
+      h.onMessage?.(e.data as WsData);
+    };
     socket.onclose = (e) => {
+      if (myId !== connId) return;
       h.onClose?.({ code: e.code, reason: e.reason, wasClean: e.wasClean });
       ws = null;
     };

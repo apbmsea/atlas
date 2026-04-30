@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'typed-redux-saga';
+import { call, takeEvery, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
 import type { Dispatch } from 'redux';
 import { toFrame } from '@shared/utils/toFrame';
@@ -19,6 +19,10 @@ export type Deps = {
   dispatch: Dispatch<RenderAction>;
 };
 
+function clamp(n: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, n));
+}
+
 /**
  * Открывает поток рендера и мапит события WS в экшены.
  * @param deps - провайденные зависимости (URL‑билдер, ws, dispatch)
@@ -30,7 +34,19 @@ function* connectWorker(deps: Deps, { payload }: ReturnType<typeof actions.conne
   let prevBlob: string | null = null;
 
   yield* call([deps.ws, deps.ws.connect], url, {
-    onOpen: () => deps.dispatch(actions.connectSuccess()),
+    onOpen: () => {
+      deps.dispatch(actions.connectSuccess());
+      // Backend sends frames only after receiving a "rotate" message.
+      deps.ws.send(
+        JSON.stringify({
+          type: 'rotate',
+          azimuth: 0,
+          elevation: 0,
+          zoom: 1,
+          final: false
+        })
+      );
+    },
     onError: () => deps.dispatch(actions.connectFailure('WebSocket error')),
     onMessage: (data: WsData) => {
       const f = toFrame(data);
@@ -53,7 +69,34 @@ function* connectWorker(deps: Deps, { payload }: ReturnType<typeof actions.conne
  * @returns Generator
  */
 function* disconnectWorker(deps: Deps) {
-  yield* call([deps.ws, deps.ws.close]);
+  // In dev/StrictMode React может смонтировать/размонтировать компонент до того,
+  // как WebSocket успел перейти в OPEN. Закрытие на CONNECTING часто даёт
+  // "WebSocket is closed before the connection is established".
+  if (deps.ws.isOpen()) {
+    yield* call([deps.ws, deps.ws.close]);
+  }
+}
+
+function* rotateWorker(
+  deps: Deps,
+  action: ReturnType<typeof actions.rotateRequest>
+) {
+  const payload = action.payload;
+  const azimuth = Number.isFinite(payload.azimuth) ? payload.azimuth : 0;
+  const elevation = Number.isFinite(payload.elevation) ? payload.elevation : 0;
+  const zoom = Number.isFinite(payload.zoom) ? payload.zoom : 1;
+  const final = !!payload.final;
+
+  const message = JSON.stringify({
+    type: 'rotate',
+    azimuth: Math.round(clamp(azimuth, -360, 360) * 10) / 10,
+    elevation: Math.round(clamp(elevation, -80, 80) * 10) / 10,
+    zoom: Math.round(clamp(zoom, 0.25, 4) * 1000) / 1000,
+    final,
+  });
+
+  // typed-redux-saga требует yield в генераторе.
+  yield* call([deps.ws, deps.ws.send], message);
 }
 
 /**
@@ -66,4 +109,5 @@ function* disconnectWorker(deps: Deps) {
 export function* renderSaga(deps: Deps) {
   yield* takeLatest(actions.connectRequest.type, connectWorker, deps);
   yield* takeEvery(actions.disconnectRequest.type, disconnectWorker, deps);
+  yield* takeEvery(actions.rotateRequest.type, rotateWorker, deps);
 }

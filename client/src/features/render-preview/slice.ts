@@ -26,6 +26,10 @@ export const { name, reducer, actions } = createSlice({
             state.connected = false;
             state.error = null;
             state.modelId = action.payload.modelId;
+            state.frameUrl = null;
+            state.lastFrameAt = null;
+            state.bytesReceived = 0;
+            state.dropped = 0;
         },
         connectSuccess(state) {
             state.connecting = false;
@@ -44,7 +48,18 @@ export const { name, reducer, actions } = createSlice({
         },
         disconnectRequest() { },
 
-        rotateRequest() { },
+        rotateRequest(
+            _state,
+            _action: PayloadAction<{
+                azimuth: number;
+                elevation: number;
+                zoom: number;
+                final?: boolean;
+            }>
+        ) {
+            // actual send is handled in saga (WebSocket side-effect)
+            // reducer body intentionally empty
+        },
 
         frameReceived(state, action: PayloadAction<{ url: string; ts: number; bytes: number }>) {
             state.frameUrl = action.payload.url;
