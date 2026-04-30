@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RenderStreamState } from './types';
 
@@ -17,11 +17,11 @@ const initialState: RenderStreamState = {
 };
 export type SelectorState = typeof initialState;
 
-export const { name, reducer, actions } = createSlice({
+export const { name, reducer, actions: RenderActions } = createSlice({
     name: 'render',
     initialState,
     reducers: {
-        connectRequest(state, action: PayloadAction<{ modelId: string }>) {
+        connectRequest: (state, action: PayloadAction<{ modelId: string }>) => {
             state.connecting = true;
             state.connected = false;
             state.error = null;
@@ -47,7 +47,6 @@ export const { name, reducer, actions } = createSlice({
             state.error = action.payload?.reason ?? state.error;
         },
         disconnectRequest() { },
-
         rotateRequest(
             _state,
             _action: PayloadAction<{
@@ -75,3 +74,13 @@ export const { name, reducer, actions } = createSlice({
         },
     },
 });
+
+export const actions = {
+    ...RenderActions,
+    rotateRequest: createAction<{
+        azimuth: number;
+        elevation: number;
+        zoom: number;
+        final?: boolean;
+    }>(`${name}/rotateRequest`)
+}

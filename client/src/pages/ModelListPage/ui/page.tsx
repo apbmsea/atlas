@@ -17,9 +17,8 @@ export const ModelsListPage: React.FC = () => {
             variant="secondary"
             leftIcon={<span aria-hidden>←</span>}
             onClick={() => navigate(-1)}
-          >
-            Назад
-          </Button>
+            children='Назад'
+          />
         </div>
       </header>
 
