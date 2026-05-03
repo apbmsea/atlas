@@ -1,0 +1,46 @@
+html[data-theme='dark'], html[data-theme='light'] {
+  .appearance {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .themeCard {
+    width: 180px;
+    border: 1px solid var(--stroke);
+    border-radius: 22px;
+    background: transparent;
+    padding: 16px;
+    display: grid;
+    gap: 10px;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--background-accent);
+    }
+
+    &__active {
+      border-color: var(--background-accent);
+    }
+  }
+
+  .themePreview {
+    height: 110px;
+    border-radius: 18px;
+    border: 1px solid var(--stroke);
+
+    &__dark {
+      background: #0a0a0a;
+    }
+    &__light {
+      background: #ffffff;
+    }
+  }
+
+  .themeLabel {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+}
+
