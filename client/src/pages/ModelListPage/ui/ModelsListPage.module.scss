@@ -30,7 +30,7 @@ html[data-theme='dark'], html[data-theme='light'] {
     min-height: 0;
   }
 
-  .models-page__list {
+  .models-page__content > :last-child {
     min-width: 0;
     padding: 16px;
     border-radius: 20px;
@@ -40,7 +40,7 @@ html[data-theme='dark'], html[data-theme='light'] {
     height: 100%;
   }
 
-  .models-page__viewer {
+  .models-page__content > :first-child {
     min-height: 420px;
     padding: 24px;
     border-radius: 20px;
@@ -48,12 +48,6 @@ html[data-theme='dark'], html[data-theme='light'] {
     background: var(--background-globe);
     border: none;
     height: 100%;
-  }
-
-  .models-page__viewerPlaceholder {
-    opacity: 0.7;
-    text-align: center;
-    padding-top: 160px;
   }
 
   @media (max-width: 900px) {

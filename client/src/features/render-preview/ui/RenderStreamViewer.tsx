@@ -3,13 +3,16 @@ import type { MouseEvent as ReactMouseEvent, WheelEvent as ReactWheelEvent } fro
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../slice';
 import { selectors } from '../selectors';
-import type { RenderProps } from '../types';
+import type { RenderViewerProps } from '../types';
 import { RenderFeature } from '..';
+import { ModelSelectionFeature } from '@features/model-selection';
+import { useAppSelector } from '@shared/store/hooks';
 
-export const RenderStreamViewer: FC<RenderProps> = ({ modelId, height = 320 }) => {
+export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = 700 }) => {
   const dispatch = useDispatch();
   const { connected, error } = useSelector(selectors.selectStatus);
   const frameUrl = useSelector(selectors.selectFrameUrl);
+  const modelId = useAppSelector(ModelSelectionFeature.selectors.selectSelectedModelId) as string | null;
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const rotationRef = useRef({
@@ -32,7 +35,10 @@ export const RenderStreamViewer: FC<RenderProps> = ({ modelId, height = 320 }) =
   const MAX_ZOOM = 4;
 
   useEffect(() => {
-    // Вынести в сагу которую триггерит клик по модельке
+    if (!modelId) {
+      dispatch(actions.disconnectRequest());
+      return;
+    }
     dispatch(actions.connectRequest({ modelId }));
     return () => { dispatch(actions.disconnectRequest()); };
   }, [dispatch, modelId]);
@@ -137,6 +143,11 @@ export const RenderStreamViewer: FC<RenderProps> = ({ modelId, height = 320 }) =
 
   return (
     <div style={{ width: '100%' }}>
+      {!modelId && (
+        <div style={{ opacity: 0.7, textAlign: 'center', paddingTop: 160 }}>
+          Выберите модель из списка
+        </div>
+      )}
       {error && (
         <div style={{ marginBottom: 8, color: 'var(--error)' }}>
           {error}
@@ -159,6 +170,8 @@ export const RenderStreamViewer: FC<RenderProps> = ({ modelId, height = 320 }) =
           userSelect: 'none',
           touchAction: 'none',
           cursor: connected ? 'grab' : 'default',
+          opacity: modelId ? 1 : 0,
+          pointerEvents: modelId ? 'auto' : 'none',
         }}
       >
         {frameUrl

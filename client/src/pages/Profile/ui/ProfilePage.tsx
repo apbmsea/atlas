@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import style from './ProfilePage.module.scss';
-import { Select, TextField, useTheme } from 'atlas-ui-kit';
+import { Select, TextField } from 'atlas-ui-kit';
+import { ThemeSwitcherWidget } from '@widgets/ThemeSwitcherWidget';
 // import classNames from 'classnames';
 
 // const cx = classNames.bind(style);
@@ -8,8 +9,6 @@ import { Select, TextField, useTheme } from 'atlas-ui-kit';
 type Option = { value: string; label: string };
 
 export const ProfilePage: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
-
   const languageOptions: Option[] = useMemo(
     () => [
       { value: 'ru', label: 'Русский язык' },
@@ -109,25 +108,7 @@ export const ProfilePage: React.FC = () => {
                   Выберите комфортный для вас внешний вид
                 </div>
 
-                <div className={style.appearance}>
-                  <button
-                    type="button"
-                    className={`${style.themeCard} ${theme === 'dark' ? style.themeCard__active : ''}`}
-                    onClick={() => { if (theme !== 'dark') toggleTheme(); }}
-                  >
-                    <div className={`${style.themePreview} ${style.themePreview__dark}`} />
-                    <div className={style.themeLabel}>Тёмная</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`${style.themeCard} ${theme === 'light' ? style.themeCard__active : ''}`}
-                    onClick={() => { if (theme !== 'light') toggleTheme(); }}
-                  >
-                    <div className={`${style.themePreview} ${style.themePreview__light}`} />
-                    <div className={style.themeLabel}>Светлая</div>
-                  </button>
-                </div>
+                <ThemeSwitcherWidget />
               </>
             )}
           </div>

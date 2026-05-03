@@ -16,4 +16,4 @@ export type RenderStreamDeps = {
   buildWsUrl: (modelId: string) => string;
 };
 
-export type RenderProps = { modelId: string; height?: number };
+export type RenderViewerProps = { height?: number };

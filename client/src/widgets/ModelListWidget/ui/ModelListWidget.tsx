@@ -3,12 +3,8 @@ import style from './ModelsListWidget.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@shared/store/hooks';
 import { ModelsListFeature } from '@features/models-list';
+import { ModelSelectionFeature } from '@features/model-selection';
 import type { FileInfo } from '@shared/types/file';
-
-type Props = {
-  /** Открыть модель (страница передаст navigate) */
-  onOpenModel: (objectKey: string) => void;
-};
 
 const ModelRow: React.FC<{
   fileInfo: FileInfo;
@@ -36,7 +32,7 @@ const ModelRow: React.FC<{
   );
 };
 
-export const ModelsListWidget: React.FC<Props> = ({ onOpenModel }) => {
+export const ModelsListWidget: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { list: models = [], loading, error } =
@@ -63,7 +59,7 @@ export const ModelsListWidget: React.FC<Props> = ({ onOpenModel }) => {
           <ModelRow
             key={fileInfo.objectKey}
             fileInfo={fileInfo}
-            onOpen={onOpenModel}
+            onOpen={(objectKey) => dispatch(ModelSelectionFeature.actions.selectModel(objectKey))}
           />
         ))}
       </div>
