@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import style from './ProfilePage.module.scss';
 import { Select, TextField } from 'atlas-ui-kit';
 import { ThemeSwitcherWidget } from '@widgets/ThemeSwitcherWidget';
+import { LectureListWidget } from '@widgets/LectureListWidget';
 // import classNames from 'classnames';
 
 // const cx = classNames.bind(style);
@@ -29,7 +30,7 @@ export const ProfilePage: React.FC = () => {
   const [language, setLanguage] = useState('ru');
   const [region, setRegion] = useState('ru');
   const [isBaseOpen, setIsBaseOpen] = useState(true);
-  const [section, setSection] = useState<'language' | 'appearance'>('language');
+  const [section, setSection] = useState<'language' | 'appearance' | 'lectures'>('language');
 
   return (
     <main className={style.page}>
@@ -41,34 +42,44 @@ export const ProfilePage: React.FC = () => {
           </div>
 
           <nav className={style.sidebar__nav}>
-            <button
-              className={style.groupHeader}
-              type="button"
-              aria-expanded={isBaseOpen}
-              onClick={() => setIsBaseOpen((v) => !v)}
-            >
-              <span>Основные</span>
-              <span className={`${style.chevron} ${isBaseOpen ? style.chevron__open : ''}`}>▾</span>
-            </button>
+            <div className={style.navGroup}>
+              <button
+                className={style.groupHeader}
+                type="button"
+                aria-expanded={isBaseOpen}
+                onClick={() => setIsBaseOpen((v) => !v)}
+              >
+                <span>Основные</span>
+                <span className={`${style.chevron} ${isBaseOpen ? style.chevron__open : ''}`}>▾</span>
+              </button>
 
-            {isBaseOpen && (
-              <div className={style.groupItems}>
-                <button
-                  className={`${style.navItem} ${section === 'language' ? style.navItem__active : ''}`}
-                  type="button"
-                  onClick={() => setSection('language')}
-                >
-                  Язык и регион
-                </button>
-                <button
-                  className={`${style.navItem} ${section === 'appearance' ? style.navItem__active : ''}`}
-                  type="button"
-                  onClick={() => setSection('appearance')}
-                >
-                  Внешний вид
-                </button>
-              </div>
-            )}
+              {isBaseOpen && (
+                <div className={style.groupItems}>
+                  <button
+                    className={`${style.navItem} ${section === 'language' ? style.navItem__active : ''}`}
+                    type="button"
+                    onClick={() => setSection('language')}
+                  >
+                    Язык и регион
+                  </button>
+                  <button
+                    className={`${style.navItem} ${section === 'appearance' ? style.navItem__active : ''}`}
+                    type="button"
+                    onClick={() => setSection('appearance')}
+                  >
+                    Внешний вид
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <button
+              className={`${style.navItem} ${section === 'lectures' ? style.navItem__active : ''}`}
+              type="button"
+              onClick={() => setSection('lectures')}
+            >
+              Доступные лекции
+            </button>
           </nav>
         </aside>
 
@@ -101,7 +112,7 @@ export const ProfilePage: React.FC = () => {
                   </div>
                 </div>
               </>
-            ) : (
+            ) : section === 'appearance' ? (
               <>
                 <div className={style.card__title}>Внешний вид</div>
                 <div className={style.card__subtitle}>
@@ -109,6 +120,15 @@ export const ProfilePage: React.FC = () => {
                 </div>
 
                 <ThemeSwitcherWidget />
+              </>
+            ) : (
+              <>
+                <div className={style.card__title}>Доступные лекции</div>
+                <div className={style.card__subtitle}>
+                  Здесь вы можете найти все доступные для вас лекции
+                </div>
+
+                <LectureListWidget />
               </>
             )}
           </div>

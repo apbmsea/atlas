@@ -36,6 +36,12 @@ html[data-theme='dark'], html[data-theme='light'] {
     gap: 8px;
   }
 
+  .navGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .groupHeader {
     width: 100%;
     display: flex;

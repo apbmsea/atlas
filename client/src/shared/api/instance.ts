@@ -1,6 +1,7 @@
 import type { HandledError } from '@shared/types/handledError';
 import axios from 'axios';
 import type { FileInfo } from '@shared/types/file';
+import type { LectureListItem } from '@shared/types/lecture';
 import { API_BASE_URL } from '@app/const/ws';
 
 type BackendFileDTO = {
@@ -133,5 +134,38 @@ export const FilesAPI = {
 	async remove(objectKey: string): Promise<unknown> {
 		const key = encodeURIComponent(objectKey);
 		return await $api.delete(`/files/${key}`);
+	},
+};
+
+type BackendLectureDto = {
+	id: string;
+	title: string;
+	sectionLabel?: string;
+	section?: string;
+	progressPercent?: number | null;
+	progress?: number | null;
+};
+
+const clampLectureProgress = (n: number | null | undefined): number | null => {
+	if (n == null || Number.isNaN(n)) return null;
+	return Math.max(0, Math.min(100, Math.round(n)));
+};
+
+const mapBackendLectureDto = (dto: BackendLectureDto): LectureListItem => {
+	const raw = dto.progressPercent ?? dto.progress;
+	const progressPercent =
+		raw === undefined || raw === null ? null : clampLectureProgress(raw);
+	return {
+		id: String(dto.id),
+		title: dto.title ?? '',
+		sectionLabel: dto.sectionLabel ?? dto.section ?? '',
+		progressPercent,
+	};
+};
+
+export const LecturesAPI = {
+	async list(): Promise<LectureListItem[]> {
+		const r = await $api.get<BackendLectureDto[]>('/lectures');
+		return (Array.isArray(r.data) ? r.data : []).map(mapBackendLectureDto);
 	},
 };
