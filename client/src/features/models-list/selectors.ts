@@ -4,12 +4,12 @@ import type { FileInfo } from '@shared/types/file';
 import { name } from './slice';
 import type { ModelListState } from './type'; // проверь точное имя интерфейса
 
-type Selector<T> = (state: RootState) => T;
+type State = {
+  [name]: ModelListState
+}
+export const selectModelsListState = (state: State) => state[name];
 
-export const selectModelsListState: Selector<ModelListState> = (state) => state[name];
-
-export const selectModels: Selector<FileInfo[]> = (state) =>
-  selectModelsListState(state).list;
+export const selectModels = createSelector([selectModelsListState], data => data.list) 
 
 export const selectModelsLoading: Selector<boolean> = (state) =>
   selectModelsListState(state).loading;
@@ -23,7 +23,12 @@ export interface ModelsListAggregated {
   error: string | null;
 }
 
-export const selectors: Selector<ModelsListAggregated> = createSelector(
-  [selectModels, selectModelsLoading, selectModelsError],
-  (list, loading, error) => ({ list, loading, error })
-);
+// export const selectors: Selector<ModelsListAggregated> = createSelector(
+//   [selectModels, selectModelsLoading, selectModelsError],
+//   (list, loading, error) => ({ list, loading, error })
+// );
+
+export const selectors = {
+  models: selectModels
+}
+

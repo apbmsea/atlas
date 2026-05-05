@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export const name = 'modelSelection' as const;
 
 export type ModelSelectionState = {
   selectedModelId: string | null;
@@ -10,8 +9,8 @@ const initialState: ModelSelectionState = {
   selectedModelId: null,
 };
 
-export const { reducer, actions } = createSlice({
-  name,
+export const { name, reducer, actions } = createSlice({
+  name: 'modelSelection',
   initialState,
   reducers: {
     selectModel(state, action: PayloadAction<string>) {

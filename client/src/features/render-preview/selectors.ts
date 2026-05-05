@@ -1,7 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { name, type SelectorState } from './slice';
+import { name} from './slice';
+import { type RenderStreamState} from './types';
 
-type State = { [name]: SelectorState };
+type State = { [name]: RenderStreamState };
 
 const root = (state: State) => state[name]
 
