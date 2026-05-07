@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
-import { FilesAPI } from '@shared/api/instance';
+import { Api } from '@shared/api/instance';
 import { modelBlobCache } from '@shared/utils/modelBlobCache';
 import { toError } from '@shared/utils/isHandledError';
 
@@ -13,7 +13,7 @@ function* deleteWorker(action: ReturnType<typeof actions.deleteRequest>) {
   try {
     const { objectKey } = action.payload;
 
-    yield* call(FilesAPI.remove, objectKey);
+    yield* call(Api.files.remove, objectKey);
     modelBlobCache.revokeAndDelete(objectKey);
 
     yield* put(actions.deleteSuccess({ objectKey }));

@@ -1,0 +1,59 @@
+html[data-theme='dark'], html[data-theme='light'] {
+  .widget {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 8px 0 2px;
+  }
+
+  .widget__title {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    opacity: 0.95;
+    text-align: center;
+    color: var(--text-invert-primary);
+  }
+
+  .widget__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    border: 2px solid color-mix(in srgb, var(--stroke) 70%, transparent);
+    background: transparent;
+    color: color-mix(in srgb, var(--text-invert-primary) 40%, transparent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 60ms ease;
+
+    &:hover {
+      border-color: var(--background-accent);
+      color: var(--background-accent);
+      // background: color-mix(in srgb, var(--background-accent) 8%, transparent);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--background-accent) 55%, transparent);
+      outline-offset: 2px;
+    }
+
+    svg {
+      display: block;
+    }
+  }
+}
+

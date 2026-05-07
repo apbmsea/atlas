@@ -1,22 +1,22 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '@shared/types/store';
 import type { LectureListItem } from '@shared/types/lecture';
 import { name } from './slice';
 import type { LecturesListState } from './type';
 
-type Selector<T> = (state: RootState) => T;
+type State = {
+  [name]: LecturesListState;
+};
 
-export const selectLecturesListState: Selector<LecturesListState> = (state) =>
-  state[name];
+export const selectLecturesListState = (state: State) => state[name];
 
-export const selectLectures: Selector<LectureListItem[]> = (state) =>
-  selectLecturesListState(state).list;
+export const selectLectures = createSelector([selectLecturesListState], (data) => data.list);
 
-export const selectLecturesLoading: Selector<boolean> = (state) =>
-  selectLecturesListState(state).loading;
+export const selectLecturesLoading = createSelector(
+  [selectLecturesListState],
+  (data) => data.loading
+);
 
-export const selectLecturesError: Selector<string | null> = (state) =>
-  selectLecturesListState(state).error;
+export const selectLecturesError = createSelector([selectLecturesListState], (data) => data.error);
 
 export interface LecturesListAggregated {
   list: LectureListItem[];
@@ -24,7 +24,7 @@ export interface LecturesListAggregated {
   error: string | null;
 }
 
-export const selectors: Selector<LecturesListAggregated> = createSelector(
+export const selectors = createSelector(
   [selectLectures, selectLecturesLoading, selectLecturesError],
-  (list, loading, error) => ({ list, loading, error })
+  (list, loading, error): LecturesListAggregated => ({ list, loading, error })
 );

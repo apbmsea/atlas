@@ -1,5 +1,6 @@
 import { name } from './slice';
-import type { ModelSelectionState } from './slice';
+import type { ModelSelectionState } from './type';
+
 
 type StateWithModelSelection = Record<string, unknown> & {
   [name]: ModelSelectionState;

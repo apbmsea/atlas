@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import style from './LectureListWidget.module.scss';
-import { useAppDispatch, useAppSelector } from '@shared/store/hooks';
 import { LecturesListFeature } from '@features/lectures-list';
 import { LectureCardWidget } from '@widgets/LectureCardWidget';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const LectureListWidget: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { list, loading, error } = useAppSelector(LecturesListFeature.selectors);
+  const dispatch = useDispatch();
+  const { list, loading, error } = useSelector(LecturesListFeature.selectors);
 
   useEffect(() => {
     dispatch(LecturesListFeature.actions.fetchListRequest());

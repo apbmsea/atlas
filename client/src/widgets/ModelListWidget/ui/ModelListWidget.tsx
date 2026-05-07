@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import style from './ModelsListWidget.module.scss';
 
-import { useAppDispatch, useAppSelector } from '@shared/store/hooks';
 import { ModelsListFeature } from '@features/models-list';
 import { ModelSelectionFeature } from '@features/model-selection';
 import type { FileInfo } from '@shared/types/file';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ModelRow: React.FC<{
   fileInfo: FileInfo;
@@ -33,10 +33,10 @@ const ModelRow: React.FC<{
 };
 
 export const ModelsListWidget: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   const { list: models = [], loading, error } =
-    useAppSelector(ModelsListFeature.selectors);
+    useSelector(ModelsListFeature.selectors);
 
   useEffect(() => {
     dispatch(ModelsListFeature.actions.fetchListRequest());

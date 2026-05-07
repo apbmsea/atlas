@@ -1,11 +1,11 @@
 import { call, put, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
-import { LecturesAPI } from '@shared/api/instance';
+import { Api } from '@shared/api/instance';
 import { isHandledError, toError } from '@shared/utils/isHandledError';
 
 function* fetchListWorker() {
   try {
-    const list = yield* call(LecturesAPI.list);
+    const list = yield* call(Api.lectures.list);
     yield* put(actions.fetchListSuccess(list));
   } catch (error: unknown) {
     if (isHandledError(error) && error.status === 404) {

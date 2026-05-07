@@ -3,6 +3,7 @@ import style from './ModelsListPage.module.scss';
 import { Button } from 'atlas-ui-kit';
 import { useNavigate } from 'react-router-dom';
 import { ModelsListWidget } from '@widgets/ModelListWidget/ui/ModelListWidget';
+import { ModelHelpersWidget } from '@widgets/ModelHelpersWidget/ui/ModelHelpersWidget';
 import { RenderStreamViewer } from '@features/render-preview';
 
 export const ModelsListPage: React.FC = () => {
@@ -23,7 +24,14 @@ export const ModelsListPage: React.FC = () => {
 
       <section className={style['models-page__content']}>
         <RenderStreamViewer />
-        <ModelsListWidget />
+        <aside className={style['models-page__sidebar']}>
+          <div className={`${style['models-page__sidebarCard']} ${style['models-page__sidebarCardGrow']}`}>
+            <ModelsListWidget />
+          </div>
+          <div className={style['models-page__sidebarPlain']}>
+            <ModelHelpersWidget />
+          </div>
+        </aside>
       </section>
     </main>
   );

@@ -1,9 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-
-export type ModelSelectionState = {
-  selectedModelId: string | null;
-};
+import type { ModelSelectionState } from './type';
 
 const initialState: ModelSelectionState = {
   selectedModelId: null,

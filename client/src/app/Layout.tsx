@@ -14,7 +14,7 @@ export const Layout = () => {
 	}, [navigate]);
 
 	return (
-		<ThemeProvider>
+		<ThemeProvider initialTheme="dark">
 			<div className='app-layout'>
 				{!location.pathname.startsWith('/modelList') && <Header />}
 				<Outlet />
