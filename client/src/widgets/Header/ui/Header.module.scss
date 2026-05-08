@@ -6,6 +6,18 @@
     align-items: center;
 	justify-content: space-between;
 
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		text-decoration: none;
+
+		&__img {
+			display: block;
+			width: 54px;
+			height: 44px;
+		}
+	}
+
 	&__content {
 		display: flex;
 		align-items: center;
@@ -13,6 +25,10 @@
 
 		&-link {
 			white-space: nowrap;
+
+			&--active {
+				color: var(--background-accent);
+			}
 		}
 	}
 }

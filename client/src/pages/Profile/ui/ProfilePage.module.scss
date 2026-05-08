@@ -58,8 +58,22 @@ html[data-theme='dark'], html[data-theme='light'] {
     text-transform: uppercase;
 
     &:hover {
-      border-color: var(--background-accent);
+      border-color: transparent;
     }
+  }
+
+  .groupHeader__left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .navIcon {
+    flex: 0 0 auto;
+    color: currentColor;
+    opacity: 0.7;
+    display: block;
   }
 
   .chevron {
@@ -80,21 +94,38 @@ html[data-theme='dark'], html[data-theme='light'] {
   }
 
   .navItem {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     text-align: left;
     border-radius: 18px;
-    border: 1px solid transparent;
+    border: none;
     background: transparent;
-    padding: 12px 14px;
+    padding: 14px 14px;
     color: var(--text-secondary);
+    font-size: 14px;
 
     &:hover {
-      border-color: var(--background-accent);
+      color: var(--background-accent);
+
+      .navIcon {
+        opacity: 1;
+      }
     }
 
     &__active {
-      border-color: var(--background-accent);
-      color: var(--text-primary);
+      color: var(--background-accent);
+
+      .navIcon {
+        opacity: 1;
+      }
     }
+  }
+
+  .groupItems .navItem {
+    font-size: 15px;
+    padding: 15px 14px;
   }
 
   .content {
@@ -120,6 +151,56 @@ html[data-theme='dark'], html[data-theme='light'] {
       color: var(--text-secondary);
       font-size: 13px;
       margin-bottom: 18px;
+    }
+  }
+
+  .accountList {
+    display: grid;
+    gap: 14px;
+    max-width: 560px;
+  }
+
+  .accountRow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+
+    &__left {
+      min-width: 0;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    &__label {
+      color: var(--text-secondary);
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    &__value {
+      color: var(--text-primary);
+      font-size: 12px;
+      opacity: 0.9;
+      word-break: break-word;
+    }
+
+    &__action {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--background-accent);
+      cursor: pointer;
+      font-size: 12px;
+      opacity: 0.9;
+
+      &:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
     }
   }
 
