@@ -13,10 +13,16 @@ export const Layout = () => {
 		setNavigate(navigate);
 	}, [navigate]);
 
+	const isAuthRoute =
+		location.pathname === '/auth' ||
+		location.pathname === '/register' ||
+		location.pathname.startsWith('/auth/') ||
+		location.pathname.startsWith('/register/');
+
 	return (
 		<ThemeProvider initialTheme="dark">
 			<div className='app-layout'>
-				{!location.pathname.startsWith('/modelList') && <Header />}
+				{!location.pathname.startsWith('/modelList') && !isAuthRoute && <Header />}
 				<Outlet />
 			</div>
 		</ThemeProvider>

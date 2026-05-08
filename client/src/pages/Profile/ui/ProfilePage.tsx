@@ -4,9 +4,9 @@ import { Select, TextField } from 'atlas-ui-kit';
 import { ThemeSwitcherWidget } from '@widgets/ThemeSwitcherWidget';
 import { LectureListWidget } from '@widgets/LectureListWidget';
 import { BankCardWidget } from '@widgets/BankCardWidget';
-// import classNames from 'classnames';
+import classNames from 'classnames/bind';
 
-// const cx = classNames.bind(style);
+const cx = classNames.bind(style);
 
 type Option = { value: string; label: string };
 
@@ -113,20 +113,20 @@ export const ProfilePage: React.FC = () => {
                   <GearIcon className={style.navIcon} />
                   <span>Основные</span>
                 </span>
-                <span className={`${style.chevron} ${isBaseOpen ? style.chevron__open : ''}`}>▾</span>
+                <span className={cx('chevron', { chevron__open: isBaseOpen })}>▾</span>
               </button>
 
               {isBaseOpen && (
                 <div className={style.groupItems}>
                   <button
-                    className={`${style.navItem} ${section === 'language' ? style.navItem__active : ''}`}
+                    className={cx('navItem', { navItem__active: section === 'language' })}
                     type="button"
                     onClick={() => setSection('language')}
                   >
                     <span>Язык и регион</span>
                   </button>
                   <button
-                    className={`${style.navItem} ${section === 'appearance' ? style.navItem__active : ''}`}
+                    className={cx('navItem', { navItem__active: section === 'appearance' })}
                     type="button"
                     onClick={() => setSection('appearance')}
                   >
@@ -137,7 +137,7 @@ export const ProfilePage: React.FC = () => {
             </div>
 
             <button
-              className={`${style.navItem} ${section === 'account' ? style.navItem__active : ''}`}
+              className={cx('navItem', { navItem__active: section === 'account' })}
               type="button"
               onClick={() => setSection('account')}
             >
@@ -146,7 +146,7 @@ export const ProfilePage: React.FC = () => {
             </button>
 
             <button
-              className={`${style.navItem} ${section === 'lectures' ? style.navItem__active : ''}`}
+              className={cx('navItem', { navItem__active: section === 'lectures' })}
               type="button"
               onClick={() => setSection('lectures')}
             >
@@ -155,7 +155,7 @@ export const ProfilePage: React.FC = () => {
             </button>
 
             <button
-              className={`${style.navItem} ${section === 'payments' ? style.navItem__active : ''}`}
+              className={cx('navItem', { navItem__active: section === 'payments' })}
               type="button"
               onClick={() => setSection('payments')}
             >

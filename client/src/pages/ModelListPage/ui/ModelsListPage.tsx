@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { ModelsListWidget } from '@widgets/ModelListWidget/ui/ModelListWidget';
 import { ModelHelpersWidget } from '@widgets/ModelHelpersWidget/ui/ModelHelpersWidget';
 import { RenderStreamViewer } from '@features/render-preview';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
 
 export const ModelsListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +28,7 @@ export const ModelsListPage: React.FC = () => {
       <section className={style['models-page__content']}>
         <RenderStreamViewer />
         <aside className={style['models-page__sidebar']}>
-          <div className={`${style['models-page__sidebarCard']} ${style['models-page__sidebarCardGrow']}`}>
+          <div className={cx('models-page__sidebarCard', 'models-page__sidebarCardGrow')}>
             <ModelsListWidget />
           </div>
           <div className={style['models-page__sidebarPlain']}>

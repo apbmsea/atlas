@@ -20,20 +20,30 @@ export function useGltfModel(
     const scene = sceneRef.current;
     if (!scene) return;
 
-    if (modelRef.current) {
+    const cleanupCurrentModel = () => {
+      if (!modelRef.current) return;
       scene.remove(modelRef.current);
       disposeObject3D(modelRef.current);
       modelRef.current = null;
-    }
+    };
+
+    cleanupCurrentModel();
 
     if (!modelUrl) return;
 
     const loader = new GLTFLoader();
     let revoked = false;
+    let cancelled = false;
 
     loader.load(
       modelUrl,
       (gltf) => {
+        if (cancelled) {
+          const rootCancelled = gltf.scene ?? gltf.scenes?.[0];
+          if (rootCancelled) disposeObject3D(rootCancelled);
+          return;
+        }
+
         const root = gltf.scene ?? gltf.scenes?.[0];
         if (!root) return;
 
@@ -48,11 +58,15 @@ export function useGltfModel(
         modelRef.current = root;
       },
       undefined,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (_error) => { }
+      () => { /* ignore */ }
     );
 
     return () => {
+      cancelled = true;
+
+      // Если модель уже успела добавиться в сцену — убрать и освободить ресурсы.
+      cleanupCurrentModel();
+
       if (!revoked && modelUrl.startsWith('blob:')) {
         try { URL.revokeObjectURL(modelUrl); } catch { /* ignore */ }
         revoked = true;

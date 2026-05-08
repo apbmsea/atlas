@@ -1,5 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import style from './BankCardWidget.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
 
 type CardBrand = 'visa' | 'mastercard';
 
@@ -49,10 +52,10 @@ export const BankCardWidget: React.FC = () => {
             key={card.id}
             type="button"
             role="listitem"
-            className={`${style.card} ${activeId === card.id ? style.card__active : ''}`}
+            className={cx('card', { card__active: activeId === card.id })}
             onClick={() => setActiveId(card.id)}
           >
-            <div className={`${style.brand} ${card.brand === 'visa' ? style.brand__visa : style.brand__mastercard}`}>
+            <div className={cx('brand', { brand__visa: card.brand === 'visa', brand__mastercard: card.brand === 'mastercard' })}>
               {card.brand === 'visa' ? (
                 <span className={style.brand__text}>VISA</span>
               ) : (

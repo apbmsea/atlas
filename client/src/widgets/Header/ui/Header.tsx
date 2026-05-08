@@ -1,6 +1,9 @@
 import { Link, NavLink } from 'react-router-dom';
 import style from './Header.module.scss';
 import { TextField } from 'atlas-ui-kit';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
 
 // const ThemeToggleButton = () => {
 // 	const { toggleTheme } = useTheme();
@@ -44,7 +47,7 @@ export const Header = () => {
 				<NavLink
 					to='/shop'
 					className={({ isActive }) =>
-						`${style['header__content-link']} ${isActive ? style['header__content-link--active'] : ''}`
+						cx('header__content-link', { 'header__content-link--active': isActive })
 					}
 				>
 					магазин
@@ -53,7 +56,7 @@ export const Header = () => {
 					to='/profile'
 					end={false}
 					className={({ isActive }) =>
-						`${style['header__content-link']} ${isActive ? style['header__content-link--active'] : ''}`
+						cx('header__content-link', { 'header__content-link--active': isActive })
 					}
 				>
 					личный кабинет
