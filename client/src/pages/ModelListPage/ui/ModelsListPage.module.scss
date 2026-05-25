@@ -39,6 +39,12 @@ html[data-theme='dark'], html[data-theme='light'] {
     min-height: 0;
   }
 
+  .models-page__sidebarActions {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
   .models-page__sidebarCard {
     min-width: 0;
     padding: 16px;

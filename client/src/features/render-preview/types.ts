@@ -5,7 +5,7 @@ export type RenderStreamState = {
 
   modelId: string | null;
 
-  frameUrl: string | null;   // data:... или blob:...
+  frameUrl: string | null;  
   lastFrameAt: number | null;
 
   bytesReceived: number;
