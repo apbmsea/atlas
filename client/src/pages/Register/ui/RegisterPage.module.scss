@@ -1,0 +1,95 @@
+.page {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bgLight {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(640px 440px at 52% 35%, rgba(0, 140, 255, 0.36), rgba(0, 0, 0, 0) 60%),
+    radial-gradient(520px 380px at 45% 63%, rgba(86, 59, 255, 0.24), rgba(0, 0, 0, 0) 65%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.card {
+  width: min(640px, 100%);
+  border-radius: 20px;
+  padding: 34px 32px;
+  background: rgba(18, 18, 18, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  opacity: 0.9;
+}
+
+.logo img {
+  width: 70px;
+  height: auto;
+  display: block;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 8px;
+}
+
+.labelError {
+  color: rgba(255, 110, 110, 0.9);
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255, 110, 110, 0.9);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+
+.hintVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.actions {
+  display: grid;
+  place-items: center;
+  margin-top: 8px;
+}
+
+.footer {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footer a {
+  color: #2e86ff;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+

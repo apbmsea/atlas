@@ -3,7 +3,12 @@ import style from './ModelsListPage.module.scss';
 import { Button } from 'atlas-ui-kit';
 import { useNavigate } from 'react-router-dom';
 import { ModelsListWidget } from '@widgets/ModelListWidget/ui/ModelListWidget';
+import { ModelHelpersWidget } from '@widgets/ModelHelpersWidget/ui/ModelHelpersWidget';
+import { ModelActionsWidget } from '@widgets/ModelActionsWidget/ui/ModelActionsWidget';
 import { RenderStreamViewer } from '@features/render-preview';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
 
 export const ModelsListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +28,17 @@ export const ModelsListPage: React.FC = () => {
 
       <section className={style['models-page__content']}>
         <RenderStreamViewer />
-        <ModelsListWidget />
+        <aside className={style['models-page__sidebar']}>
+          <div className={style['models-page__sidebarActions']}>
+            <ModelActionsWidget />
+          </div>
+          <div className={cx('models-page__sidebarCard', 'models-page__sidebarCardGrow')}>
+            <ModelsListWidget />
+          </div>
+          <div className={style['models-page__sidebarPlain']}>
+            <ModelHelpersWidget />
+          </div>
+        </aside>
       </section>
     </main>
   );

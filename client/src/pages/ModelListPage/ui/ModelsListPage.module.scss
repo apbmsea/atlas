@@ -30,14 +30,43 @@ html[data-theme='dark'], html[data-theme='light'] {
     min-height: 0;
   }
 
-  .models-page__content > :last-child {
+  .models-page__sidebar {
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+  }
+
+  .models-page__sidebarActions {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  .models-page__sidebarCard {
     min-width: 0;
     padding: 16px;
     border-radius: 20px;
     backdrop-filter: blur(4px);
     background: var(--background-island);
     border: 1px solid var(--stroke);
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .models-page__sidebarCardGrow {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .models-page__sidebarPlain {
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
   }
 
   .models-page__content > :first-child {

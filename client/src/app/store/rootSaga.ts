@@ -7,6 +7,7 @@ import { ModelsListFeature } from '@features/models-list';
 import { ModelViewFeature } from '@features/model-view';
 import { ModelUploadFeature } from '@features/model-upload';
 import { ModelDeleteFeature } from '@features/model-delete';
+import { LecturesListFeature } from '@features/lectures-list';
 
 
 export function* rootSaga() {
@@ -22,5 +23,6 @@ export function* rootSaga() {
 		fork(ModelViewFeature.sagas.init),
 		fork(ModelUploadFeature.sagas.init),
 		fork(ModelDeleteFeature.sagas.init),
+		fork(LecturesListFeature.sagas.init),
 	]);
 }

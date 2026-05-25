@@ -5,6 +5,7 @@ import { ModelsListFeature } from "@features/models-list";
 import { ModelUploadFeature } from "@features/model-upload";
 import { ModelDeleteFeature } from "@features/model-delete";
 import { ModelSelectionFeature } from '@features/model-selection';
+import { LecturesListFeature } from '@features/lectures-list';
 
 
 export const rootReducer = combineReducers({
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
   ...ModelViewFeature.reducer,
   ...ModelUploadFeature.reducer,
   ...ModelDeleteFeature.reducer,
+  ...LecturesListFeature.reducer,
 });
 export type RootState = ReturnType<typeof rootReducer>;

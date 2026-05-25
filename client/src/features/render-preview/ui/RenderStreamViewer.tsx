@@ -6,13 +6,28 @@ import { selectors } from '../selectors';
 import type { RenderViewerProps } from '../types';
 import { RenderFeature } from '..';
 import { ModelSelectionFeature } from '@features/model-selection';
-import { useAppSelector } from '@shared/store/hooks';
+import {
+  RENDER_VIEWER_AZIMUTH_WRAP_DEG,
+  RENDER_VIEWER_DEFAULT_HEIGHT_PX,
+  RENDER_VIEWER_DRAG_SEND_INTERVAL_MS,
+  RENDER_VIEWER_ELEVATION_MAX_DEG,
+  RENDER_VIEWER_ELEVATION_MIN_DEG,
+  RENDER_VIEWER_EMPTY_STATE_OPACITY,
+  RENDER_VIEWER_EMPTY_STATE_PADDING_TOP_PX,
+  RENDER_VIEWER_ERROR_MARGIN_BOTTOM_PX,
+  RENDER_VIEWER_MIN_ANGLE_CHANGE_DEG,
+  RENDER_VIEWER_ROTATE_SENSITIVITY,
+  RENDER_VIEWER_WHEEL_SEND_INTERVAL_MS,
+  RENDER_VIEWER_WHEEL_ZOOM_FACTOR,
+  RENDER_VIEWER_ZOOM_MAX,
+  RENDER_VIEWER_ZOOM_MIN,
+} from '@shared/constants/renderPreview';
 
-export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = 700 }) => {
+export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = RENDER_VIEWER_DEFAULT_HEIGHT_PX }) => {
   const dispatch = useDispatch();
   const { connected, error } = useSelector(selectors.selectStatus);
   const frameUrl = useSelector(selectors.selectFrameUrl);
-  const modelId = useAppSelector(ModelSelectionFeature.selectors.selectSelectedModelId) as string | null;
+  const modelId = useSelector(ModelSelectionFeature.selectors.selectSelectedModelId) as string | null;
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const rotationRef = useRef({
@@ -25,14 +40,6 @@ export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = 700 }) => {
     lastUpdateTime: 0,
     lastWheelSend: 0,
   });
-
-  const ROTATE_SENSITIVITY = 0.35;
-  const UPDATE_INTERVAL_MS = 45;
-  const MIN_ANGLE_CHANGE = 0.35;
-  const MIN_ELEV = -80;
-  const MAX_ELEV = 80;
-  const MIN_ZOOM = 0.25;
-  const MAX_ZOOM = 4;
 
   useEffect(() => {
     if (!modelId) {
@@ -89,23 +96,25 @@ export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = 700 }) => {
     const dx = e.nativeEvent.movementX ?? 0;
     const dy = e.nativeEvent.movementY ?? 0;
 
-    rotationRef.current.azimuth -= dx * ROTATE_SENSITIVITY;
-    rotationRef.current.elevation += dy * ROTATE_SENSITIVITY;
+    rotationRef.current.azimuth -= dx * RENDER_VIEWER_ROTATE_SENSITIVITY;
+    rotationRef.current.elevation += dy * RENDER_VIEWER_ROTATE_SENSITIVITY;
 
-    rotationRef.current.azimuth = ((rotationRef.current.azimuth % 360) + 360) % 360;
+    rotationRef.current.azimuth =
+      ((rotationRef.current.azimuth % RENDER_VIEWER_AZIMUTH_WRAP_DEG) + RENDER_VIEWER_AZIMUTH_WRAP_DEG) %
+      RENDER_VIEWER_AZIMUTH_WRAP_DEG;
     rotationRef.current.elevation = Math.max(
-      MIN_ELEV,
-      Math.min(MAX_ELEV, rotationRef.current.elevation)
+      RENDER_VIEWER_ELEVATION_MIN_DEG,
+      Math.min(RENDER_VIEWER_ELEVATION_MAX_DEG, rotationRef.current.elevation)
     );
 
     const now = performance.now();
-    if (now - rotationRef.current.lastUpdateTime < UPDATE_INTERVAL_MS) return;
+    if (now - rotationRef.current.lastUpdateTime < RENDER_VIEWER_DRAG_SEND_INTERVAL_MS) return;
 
     const change =
       Math.abs(rotationRef.current.azimuth - rotationRef.current.lastSentAzimuth) +
       Math.abs(rotationRef.current.elevation - rotationRef.current.lastSentElevation);
 
-    if (change < MIN_ANGLE_CHANGE) return;
+    if (change < RENDER_VIEWER_MIN_ANGLE_CHANGE_DEG) return;
 
     rotationRef.current.lastSentAzimuth = rotationRef.current.azimuth;
     rotationRef.current.lastSentElevation = rotationRef.current.elevation;
@@ -125,15 +134,15 @@ export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = 700 }) => {
     e.preventDefault();
 
     const now = performance.now();
-    if (now - rotationRef.current.lastWheelSend < 45) return;
+    if (now - rotationRef.current.lastWheelSend < RENDER_VIEWER_WHEEL_SEND_INTERVAL_MS) return;
     rotationRef.current.lastWheelSend = now;
 
     const dir = Math.sign(e.deltaY) || 1;
-    const factor = dir > 0 ? 1.07 : 1 / 1.07;
+    const factor = dir > 0 ? RENDER_VIEWER_WHEEL_ZOOM_FACTOR : 1 / RENDER_VIEWER_WHEEL_ZOOM_FACTOR;
 
     rotationRef.current.zoom = Math.min(
-      MAX_ZOOM,
-      Math.max(MIN_ZOOM, rotationRef.current.zoom * factor)
+      RENDER_VIEWER_ZOOM_MAX,
+      Math.max(RENDER_VIEWER_ZOOM_MIN, rotationRef.current.zoom * factor)
     );
 
     sendRotate(false);
@@ -144,12 +153,18 @@ export const RenderStreamViewer: FC<RenderViewerProps> = ({ height = 700 }) => {
   return (
     <div style={{ width: '100%' }}>
       {!modelId && (
-        <div style={{ opacity: 0.7, textAlign: 'center', paddingTop: 160 }}>
+        <div
+          style={{
+            opacity: RENDER_VIEWER_EMPTY_STATE_OPACITY,
+            textAlign: 'center',
+            paddingTop: RENDER_VIEWER_EMPTY_STATE_PADDING_TOP_PX,
+          }}
+        >
           Выберите модель из списка
         </div>
       )}
       {error && (
-        <div style={{ marginBottom: 8, color: 'var(--error)' }}>
+        <div style={{ marginBottom: RENDER_VIEWER_ERROR_MARGIN_BOTTOM_PX, color: 'var(--error)' }}>
           {error}
         </div>
       )}

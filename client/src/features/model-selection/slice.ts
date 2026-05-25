@@ -1,17 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-export const name = 'modelSelection' as const;
-
-export type ModelSelectionState = {
-  selectedModelId: string | null;
-};
+import { actions as modelDeleteActions } from '@features/model-delete/slice';
+import type { ModelSelectionState } from './type';
 
 const initialState: ModelSelectionState = {
   selectedModelId: null,
 };
 
-export const { reducer, actions } = createSlice({
-  name,
+export const { name, reducer, actions } = createSlice({
+  name: 'modelSelection',
   initialState,
   reducers: {
     selectModel(state, action: PayloadAction<string>) {
@@ -20,6 +16,13 @@ export const { reducer, actions } = createSlice({
     clearSelection(state) {
       state.selectedModelId = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(modelDeleteActions.deleteSuccess, (state, action) => {
+      if (state.selectedModelId === action.payload.objectKey) {
+        state.selectedModelId = null;
+      }
+    });
   },
 });
 

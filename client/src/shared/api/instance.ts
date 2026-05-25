@@ -1,7 +1,9 @@
 import type { HandledError } from '@shared/types/handledError';
 import axios from 'axios';
 import type { FileInfo } from '@shared/types/file';
+import type { LectureListItem } from '@shared/types/lecture';
 import { API_BASE_URL } from '@app/const/ws';
+import { clampLectureProgress } from '@shared/utils/clampLectureProgress';
 
 type BackendFileDTO = {
 	// backend (Spring) returns FileDTO with these field names:
@@ -14,6 +16,15 @@ type BackendFileDTO = {
 	objectKey?: string;
 	contentType?: string;
 	createdAt?: string;
+};
+
+type BackendLectureDto = {
+	id: string;
+	title: string;
+	sectionLabel?: string;
+	section?: string;
+	progressPercent?: number | null;
+	progress?: number | null;
 };
 
 const mapBackendFileDtoToFileInfo = (dto: BackendFileDTO): FileInfo => {
@@ -99,7 +110,7 @@ $api.interceptors.response.use(
 
 
 
-export const FilesAPI = {
+const FilesAPI = {
 	async upload(file: File): Promise<FileInfo> {
 		const form = new FormData();
 		form.append('file', file);
@@ -134,4 +145,28 @@ export const FilesAPI = {
 		const key = encodeURIComponent(objectKey);
 		return await $api.delete(`/files/${key}`);
 	},
+};
+
+const mapBackendLectureDto = (dto: BackendLectureDto): LectureListItem => {
+	const raw = dto.progressPercent ?? dto.progress;
+	const progressPercent =
+		raw === undefined || raw === null ? null : clampLectureProgress(raw);
+	return {
+		id: String(dto.id),
+		title: dto.title ?? '',
+		sectionLabel: dto.sectionLabel ?? dto.section ?? '',
+		progressPercent,
+	};
+};
+
+const LecturesAPI = {
+	async list(): Promise<LectureListItem[]> {
+		const r = await $api.get<BackendLectureDto[]>('/lectures');
+		return (Array.isArray(r.data) ? r.data : []).map(mapBackendLectureDto);
+	},
+};
+
+export const Api = {
+	files: FilesAPI,
+	lectures: LecturesAPI,
 };

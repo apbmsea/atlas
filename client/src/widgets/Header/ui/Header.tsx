@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import style from './Header.module.scss';
 import { TextField } from 'atlas-ui-kit';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
 
 // const ThemeToggleButton = () => {
 // 	const { toggleTheme } = useTheme();
@@ -10,7 +13,9 @@ import { TextField } from 'atlas-ui-kit';
 export const Header = () => {
 	return (
 		<header className={style['header']}>
-			<Link to='/home'>логотип</Link>
+			<Link to='/home' className={style.logo} aria-label="На главную">
+				<img className={style.logo__img} src="/Logo.svg" alt="Atlas" />
+			</Link>
 			<div className={style['header__content']}>
 				<TextField
 					leftIcon={
@@ -39,12 +44,23 @@ export const Header = () => {
 					}
 					placeholder='Поиск'
 				/>
-				<Link className={style['header__content-link']} to='/shop'>
+				<NavLink
+					to='/shop'
+					className={({ isActive }) =>
+						cx('header__content-link', { 'header__content-link--active': isActive })
+					}
+				>
 					магазин
-				</Link>
-				<Link className={style['header__content-link']} to='/profile'>
+				</NavLink>
+				<NavLink
+					to='/profile'
+					end={false}
+					className={({ isActive }) =>
+						cx('header__content-link', { 'header__content-link--active': isActive })
+					}
+				>
 					личный кабинет
-				</Link>
+				</NavLink>
 			</div>
 		</header>
 	);

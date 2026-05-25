@@ -5,6 +5,16 @@ import { toFrame } from '@shared/utils/toFrame';
 import type { WsApi } from '@shared/api/wsInstance';
 import type { WsData } from '@shared/types/ws';
 import { revokeBlob } from '@shared/utils/revorkeBlob';
+import {
+  RENDER_ROTATE_MESSAGE_ANGLE_ROUND_MULTIPLIER,
+  RENDER_ROTATE_MESSAGE_AZIMUTH_MAX_DEG,
+  RENDER_ROTATE_MESSAGE_AZIMUTH_MIN_DEG,
+  RENDER_ROTATE_MESSAGE_ZOOM_ROUND_MULTIPLIER,
+  RENDER_VIEWER_ELEVATION_MAX_DEG,
+  RENDER_VIEWER_ELEVATION_MIN_DEG,
+  RENDER_VIEWER_ZOOM_MAX,
+  RENDER_VIEWER_ZOOM_MIN,
+} from '@shared/constants/renderPreview';
 
 /** Юнион всех экшенов фичи (строгий тип для dispatch). */
 type RenderAction = ReturnType<(typeof actions)[keyof typeof actions]>;
@@ -89,9 +99,19 @@ function* rotateWorker(
 
   const message = JSON.stringify({
     type: 'rotate',
-    azimuth: Math.round(clamp(azimuth, -360, 360) * 10) / 10,
-    elevation: Math.round(clamp(elevation, -80, 80) * 10) / 10,
-    zoom: Math.round(clamp(zoom, 0.25, 4) * 1000) / 1000,
+    azimuth:
+      Math.round(
+        clamp(azimuth, RENDER_ROTATE_MESSAGE_AZIMUTH_MIN_DEG, RENDER_ROTATE_MESSAGE_AZIMUTH_MAX_DEG) *
+          RENDER_ROTATE_MESSAGE_ANGLE_ROUND_MULTIPLIER
+      ) / RENDER_ROTATE_MESSAGE_ANGLE_ROUND_MULTIPLIER,
+    elevation:
+      Math.round(
+        clamp(elevation, RENDER_VIEWER_ELEVATION_MIN_DEG, RENDER_VIEWER_ELEVATION_MAX_DEG) *
+          RENDER_ROTATE_MESSAGE_ANGLE_ROUND_MULTIPLIER
+      ) / RENDER_ROTATE_MESSAGE_ANGLE_ROUND_MULTIPLIER,
+    zoom:
+      Math.round(clamp(zoom, RENDER_VIEWER_ZOOM_MIN, RENDER_VIEWER_ZOOM_MAX) * RENDER_ROTATE_MESSAGE_ZOOM_ROUND_MULTIPLIER) /
+      RENDER_ROTATE_MESSAGE_ZOOM_ROUND_MULTIPLIER,
     final,
   });
 

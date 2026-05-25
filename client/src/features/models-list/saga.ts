@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'typed-redux-saga';
 import { actions } from './slice';
-import { FilesAPI } from '@shared/api/instance';
+import { Api } from '@shared/api/instance';
 import { toError } from '@shared/utils/isHandledError';
 
 /**
@@ -9,9 +9,9 @@ import { toError } from '@shared/utils/isHandledError';
  */
 function* fetchListWorker() {
   try {
-    const filesList = yield* call(FilesAPI.list);
+    const filesList = yield* call(Api.files.list);
     yield* put(actions.fetchListSuccess(filesList));
-  } catch (error) {
+  } catch (error: unknown) {
     yield* put(actions.fetchListFailure(toError(error)));
   }
 }

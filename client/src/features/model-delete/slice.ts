@@ -31,11 +31,11 @@ export const { name, reducer, actions } = createSlice({
 
     /**
      * Устанавливает ошибку при удалении модели.
-     * @param payloadAction - текст ошибки
+     * @param payloadAction.payload - текст ошибки
      */
-    deleteFailure(state, payloadAction: PayloadAction<string>) {
+    deleteFailure(state, {payload}: PayloadAction<string>) {
       state.deleting = false;
-      state.error = payloadAction.payload;
+      state.error = payload;
     },
   },
 });

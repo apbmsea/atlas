@@ -6,6 +6,18 @@
     align-items: center;
 	justify-content: space-between;
 
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		text-decoration: none;
+
+		&__img {
+			display: block;
+			width: 54px;
+			height: 44px;
+		}
+	}
+
 	&__content {
 		display: flex;
 		align-items: center;
@@ -13,6 +25,21 @@
 
 		&-link {
 			white-space: nowrap;
+			text-decoration: none;
+			color: var(--text-invert-primary);
+			padding: 8px 16px;
+			border-radius: 12px;
+			border: 1px solid transparent;
+			background: transparent;
+			box-sizing: border-box;
+			transition: border-color 160ms ease, color 160ms ease;
+
+			&:hover,
+			&--active {
+				background: transparent;
+				border-color: var(--background-accent);
+				color: var(--background-accent);
+			}
 		}
 	}
 }

@@ -15,7 +15,6 @@ const initialState: RenderStreamState = {
   bytesReceived: 0,
   dropped: 0,
 };
-export type SelectorState = typeof initialState;
 
 export const { name, reducer, actions: RenderActions } = createSlice({
   name: 'render',

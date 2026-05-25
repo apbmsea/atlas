@@ -1,21 +1,19 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '@shared/types/store';
 import type { FileInfo } from '@shared/types/file';
 import { name } from './slice';
-import type { ModelListState } from './type'; // проверь точное имя интерфейса
+import type { ModelListState } from './type';
 
-type Selector<T> = (state: RootState) => T;
+type State = {
+  [name]: ModelListState;
+};
 
-export const selectModelsListState: Selector<ModelListState> = (state) => state[name];
+export const selectModelsListState = (state: State) => state[name];
 
-export const selectModels: Selector<FileInfo[]> = (state) =>
-  selectModelsListState(state).list;
+export const selectModels = createSelector([selectModelsListState], (data) => data.list);
 
-export const selectModelsLoading: Selector<boolean> = (state) =>
-  selectModelsListState(state).loading;
+export const selectModelsLoading = createSelector([selectModelsListState], (data) => data.loading);
 
-export const selectModelsError: Selector<string | null> = (state) =>
-  selectModelsListState(state).error;
+export const selectModelsError = createSelector([selectModelsListState], (data) => data.error);
 
 export interface ModelsListAggregated {
   list: FileInfo[];
@@ -23,7 +21,8 @@ export interface ModelsListAggregated {
   error: string | null;
 }
 
-export const selectors: Selector<ModelsListAggregated> = createSelector(
+export const selectors = createSelector(
   [selectModels, selectModelsLoading, selectModelsError],
-  (list, loading, error) => ({ list, loading, error })
+  (list, loading, error): ModelsListAggregated => ({ list, loading, error })
 );
+

@@ -1,4 +1,29 @@
 html[data-theme='dark'], html[data-theme='light'] {
+  .widget {
+    display: grid;
+    gap: 14px;
+  }
+
+  .widget__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .widget__title {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+
+  .widget__hint {
+    color: var(--text-secondary);
+    font-size: 12px;
+    opacity: 0.75;
+  }
+
   .appearance {
     display: flex;
     gap: 20px;
@@ -6,28 +31,36 @@ html[data-theme='dark'], html[data-theme='light'] {
   }
 
   .themeCard {
-    width: 180px;
-    border: 1px solid var(--stroke);
+    width: 260px;
+    border: none;
     border-radius: 22px;
     background: transparent;
-    padding: 16px;
+    padding: 20px;
     display: grid;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
+    text-align: left;
+    box-shadow: none;
 
     &:hover {
-      border-color: var(--background-accent);
+      box-shadow: none;
     }
 
     &__active {
-      border-color: var(--background-accent);
+      box-shadow: none;
     }
   }
 
   .themePreview {
-    height: 110px;
-    border-radius: 18px;
-    border: 1px solid var(--stroke);
+    height: 180px;
+    border-radius: 22px;
+    border: 1px solid color-mix(in srgb, var(--stroke) 70%, transparent);
+    position: relative;
+    overflow: hidden;
+
+    &__active {
+      border-color: var(--background-accent);
+    }
 
     &__dark {
       background: #0a0a0a;
@@ -37,10 +70,39 @@ html[data-theme='dark'], html[data-theme='light'] {
     }
   }
 
+  .activeMark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--background-accent) 50%, transparent);
+    background: color-mix(in srgb, #000 45%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--background-accent) 20%, transparent);
+    transform: translate(-50%, -50%);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid var(--background-accent);
+      border-bottom: 2px solid var(--background-accent);
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+  }
+
   .themeLabel {
     text-align: center;
     color: var(--text-secondary);
     font-size: 12px;
+
+    &__active {
+      color: var(--background-accent);
+    }
   }
 }
 
