@@ -1,4 +1,4 @@
-import type { HandledError } from "@shared/types/handledError.types";
+import type { HandledError } from "@shared/types/handledError";
 
 
 export function isHandledError(error: unknown): error is HandledError {
@@ -14,3 +14,11 @@ export function isHandledError(error: unknown): error is HandledError {
 
 	return true;
 }
+
+/**
+ * Преобразует неизвестную ошибку к человекочитаемой строке.
+ * @param e - любая ошибка
+ * @returns строка с сообщением об ошибке
+ */
+export const toError = (e: unknown): string =>
+	e instanceof Error ? e.message : typeof e === 'string' ? e : JSON.stringify(e);
